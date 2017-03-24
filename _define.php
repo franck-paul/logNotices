@@ -18,7 +18,7 @@ $this->registerModule(
 	/* Version */			'0.1',
 	array(
 		/* Dependencies */	'requires' =>		array(array('core','2.11')),
-//		/* Permissions */	'permissions' =>	'',
+		/* Permissions */	'permissions' =>	'usage',
 		/* Type */			'type' =>			'plugin',
 		/* Settings */		'settings' => 		array('blog' => '#params.logNotices')
 	)

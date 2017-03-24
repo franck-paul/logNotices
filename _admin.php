@@ -14,18 +14,21 @@ if (!defined('DC_CONTEXT_ADMIN')) { return; }
 // dead but useful code, in order to have translations
 __('Store notices in database').__('Store all or error only notices in the database');
 
-$_menu['System']->addItem(__('Notices'),
-		$core->adminurl->get('admin.plugin.logNotices'),
-		urldecode(dcPage::getPF('logNotices/icon.png')),
-		preg_match('/'.preg_quote($core->adminurl->get('admin.plugin.logNotices')).'(&.*)/',$_SERVER['REQUEST_URI']),
-		$core->auth->isSuperAdmin());
+if ($core->auth->isSuperAdmin()) {
+	// Register menu
+	$_menu['System']->addItem(__('Notices'),
+			$core->adminurl->get('admin.plugin.logNotices'),
+			urldecode(dcPage::getPF('logNotices/icon.png')),
+			preg_match('/'.preg_quote($core->adminurl->get('admin.plugin.logNotices')).'(&.*)/',$_SERVER['REQUEST_URI']),
+			$core->auth->isSuperAdmin());
 
-/* Register favorite */
-$core->addBehavior('adminDashboardFavorites',array('logNoticesBehaviors','adminDashboardFavorites'));
+	// Register favorite
+	$core->addBehavior('adminDashboardFavorites',array('logNoticesBehaviors','adminDashboardFavorites'));
 
-// Settings behaviors
-$core->addBehavior('adminBlogPreferencesForm',array('logNoticesBehaviors','adminBlogPreferencesForm'));
-$core->addBehavior('adminBeforeBlogSettingsUpdate',array('logNoticesBehaviors','adminBeforeBlogSettingsUpdate'));
+	// Settings behaviors
+	$core->addBehavior('adminBlogPreferencesForm',array('logNoticesBehaviors','adminBlogPreferencesForm'));
+	$core->addBehavior('adminBeforeBlogSettingsUpdate',array('logNoticesBehaviors','adminBeforeBlogSettingsUpdate'));
+}
 
 // Store error and standard DC notices in the database
 $core->addBehavior('adminPageNotificationError',array('logNoticesBehaviors','adminPageNotificationError'));
@@ -98,6 +101,9 @@ class logNoticesBehaviors
 
 			$table = isset($type[$notice['class']]) ? $type[$notice['class']] : 'dc-notice';
 			$msg = $notice['text'];
+			if (!isset($notice['with_ts']) || ($notice['with_ts'] == true)) {
+				$msg = dt::str(__('[%H:%M:%S]'),$notice['ts'],$core->auth->getInfo('user_tz')).' '.$msg;
+			}
 			self::addLogNotice($core,$table,$msg);
 		}
 	}

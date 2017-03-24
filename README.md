@@ -12,7 +12,7 @@ GPL v2, fork and distribute it freely. You may pay me a 🍺 or even 🍻 if you
 
 0.1 - 2017/03/24
 
-- Initial version, settings and stores log in db only
+- Initial version
 
 
 ## KNOWNS ISSUES
@@ -20,5 +20,10 @@ GPL v2, fork and distribute it freely. You may pay me a 🍺 or even 🍻 if you
 
 ## IDEAS
 
+- add filters (user, blog, date(range), …) to the list
 
-## 
+
+## TODO
+
+- list existing notices (with pagination)
+- add maintenance task to remove all notices periodically
