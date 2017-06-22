@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 notifyMe module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-24 11:10+0100\n"
+"POT-Creation-Date: 2017-03-24 15:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,3 +30,9 @@ msgstr "Seulement les notifications d'erreur"
 
 msgid "Notifications in database"
 msgstr "Notifications dans la base de données"
+
+msgid "%Y/%m/%d %H:%M:%S"
+msgstr ""
+
+msgid "No dotclear notices stored in database"
+msgstr "Pas de notifications Dotclear enregistrées dans la base de données"

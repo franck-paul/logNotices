@@ -1,6 +1,6 @@
 <?php
 # -- BEGIN LICENSE BLOCK ----------------------------------
-# This file is part of notifyMe, a plugin for Dotclear 2.
+# This file is part of logNotices, a plugin for Dotclear 2.
 #
 # Copyright (c) Franck Paul and contributors
 #

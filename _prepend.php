@@ -17,3 +17,5 @@ if (!defined('DC_CONTEXT_ADMIN')) { return false; }
 
 // Admin mode
 
+$__autoload['dcLogNoticesActionsPage'] = dirname(__FILE__).'/inc/class.dcactions.php';
+$__autoload['adminLogNoticesList'] = dirname(__FILE__).'/inc/lib.pager.php';

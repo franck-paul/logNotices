@@ -26,4 +26,5 @@ GPL v2, fork and distribute it freely. You may pay me a 🍺 or even 🍻 if you
 ## TODO
 
 - list existing notices (with pagination)
-- add maintenance task to remove all notices periodically
+- add maintenance task to remove all notices periodically (if possible)
+- cope with blog admins (restricted to blog's notice) and super admin (all plateform's blogs notices)
