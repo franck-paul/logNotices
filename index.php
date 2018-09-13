@@ -15,9 +15,9 @@ if (!defined('DC_CONTEXT_ADMIN')) {return;}
 dcPage::checkSuper();
 
 // Get current list of stored notices
-$params = array(
-    'log_table' => array('dc-sys-error', 'dc-success', 'dc-warning', 'dc-error', 'dc-notice')
-);
+$params = [
+    'log_table' => ['dc-sys-error', 'dc-success', 'dc-warning', 'dc-error', 'dc-notice']
+];
 
 $page        = !empty($_GET['page']) ? max(1, (integer) $_GET['page']) : 1;
 $nb_per_page = 30;
@@ -26,7 +26,7 @@ if (!empty($_GET['nb']) && (integer) $_GET['nb'] > 0) {
     $nb_per_page = (integer) $_GET['nb'];
 }
 
-$params['limit'] = array((($page - 1) * $nb_per_page), $nb_per_page);
+$params['limit'] = [(($page - 1) * $nb_per_page), $nb_per_page];
 $params['order'] = 'log_dt DESC';
 
 try {
@@ -38,7 +38,7 @@ try {
 }
 
 // Cope with actions
-$log_actions = new dcLogNoticesActionsPage($core, 'plugin.php', array('p' => 'logNotices'));
+$log_actions = new dcLogNoticesActionsPage($core, 'plugin.php', ['p' => 'logNotices']);
 if ($log_actions->process()) {
     return;
 }
@@ -62,10 +62,10 @@ dcPage::jsVar('dotclear.msg.confirm_delete_notices', __("Are you sure you want t
 <body>
 <?php
 echo dcPage::breadcrumb(
-    array(
+    [
         html::escapeHTML($core->blog->name) => '',
         __('Notifications in database')     => ''
-    ));
+    ]);
 
 if (!empty($msg)) {
     dcPage::success($msg);
@@ -86,8 +86,8 @@ if (!$core->error->flag()) {
         '<p class="col right"><label for="action" class="classic">' . __('Selected notices action:') . '</label> ' .
         form::combo('action', $log_actions->getCombo()) .
         '<input id="do-action" type="submit" value="' . __('ok') . '" />' .
-        form::hidden(array('p'), 'pages') .
-        form::hidden(array('act'), 'list') .
+        form::hidden(['p'], 'pages') .
+        form::hidden(['act'], 'list') .
         $core->formNonce() .
         '</p></div>' .
         '</form>');

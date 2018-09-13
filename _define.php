@@ -18,10 +18,10 @@ $this->registerModule(
     "Store all or error only notices in the database", // Description
     "Franck Paul and contributors",                    // Author
     '0.1',                                             // Version
-    array(
-        'requires'    => array(array('core', '2.11')),          // Dependencies
-        'permissions' => 'usage,contentadmin',                  // Permissions
-        'type'        => 'plugin',                              // Type
-        'settings'    => array('blog' => '#params.logNotices') // Settings
-    )
+    [
+        'requires'    => [['core', '2.13']],               // Dependencies
+        'permissions' => 'usage,contentadmin',             // Permissions
+        'type'        => 'plugin',                         // Type
+        'settings'    => ['blog' => '#params.logNotices'] // Settings
+    ]
 );

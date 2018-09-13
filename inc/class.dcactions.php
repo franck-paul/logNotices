@@ -15,10 +15,10 @@ if (!defined('DC_RC_PATH')) {return;}
 
 class dcLogNoticesActionsPage extends dcActionsPage
 {
-    public function __construct($core, $uri, $redirect_args = array())
+    public function __construct($core, $uri, $redirect_args = [])
     {
         parent::__construct($core, $uri, $redirect_args);
-        $this->redirect_fields = array();
+        $this->redirect_fields = [];
         $this->caller_title    = __('Notices');
     }
 
@@ -26,11 +26,11 @@ class dcLogNoticesActionsPage extends dcActionsPage
     {
         $this->core->error->add($e->getMessage());
         $this->beginPage(dcPage::breadcrumb(
-            array(
+            [
                 html::escapeHTML($this->core->blog->name) => '',
                 __('Notices')                             => $this->getRedirection(true),
                 __('Notices actions')                     => ''
-            ))
+            ])
         );
         $this->endPage();
     }
@@ -51,9 +51,9 @@ class dcLogNoticesActionsPage extends dcActionsPage
 
     protected function fetchEntries($from)
     {
-        $params = array(
-            'log_table' => array('dc-sys-error', 'dc-success', 'dc-warning', 'dc-error', 'dc-notice')
-        );
+        $params = [
+            'log_table' => ['dc-sys-error', 'dc-success', 'dc-warning', 'dc-error', 'dc-notice']
+        ];
         if (!empty($from['entries'])) {
             $entries = $from['entries'];
             foreach ($entries as $k => $v) {

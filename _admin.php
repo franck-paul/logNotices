@@ -25,28 +25,28 @@ if ($core->auth->isSuperAdmin()) {
         $core->auth->isSuperAdmin());
 
     // Register favorite
-    $core->addBehavior('adminDashboardFavorites', array('logNoticesBehaviors', 'adminDashboardFavorites'));
+    $core->addBehavior('adminDashboardFavorites', ['logNoticesBehaviors', 'adminDashboardFavorites']);
 
     // Settings behaviors
-    $core->addBehavior('adminBlogPreferencesForm', array('logNoticesBehaviors', 'adminBlogPreferencesForm'));
-    $core->addBehavior('adminBeforeBlogSettingsUpdate', array('logNoticesBehaviors', 'adminBeforeBlogSettingsUpdate'));
+    $core->addBehavior('adminBlogPreferencesForm', ['logNoticesBehaviors', 'adminBlogPreferencesForm']);
+    $core->addBehavior('adminBeforeBlogSettingsUpdate', ['logNoticesBehaviors', 'adminBeforeBlogSettingsUpdate']);
 }
 
 // Store error and standard DC notices in the database
-$core->addBehavior('adminPageNotificationError', array('logNoticesBehaviors', 'adminPageNotificationError'));
-$core->addBehavior('adminPageNotification', array('logNoticesBehaviors', 'adminPageNotification'));
+$core->addBehavior('adminPageNotificationError', ['logNoticesBehaviors', 'adminPageNotificationError']);
+$core->addBehavior('adminPageNotification', ['logNoticesBehaviors', 'adminPageNotification']);
 
 class logNoticesBehaviors
 {
     public static function adminDashboardFavorites($core, $favs)
     {
-        $favs->register('logNotices', array(
+        $favs->register('logNotices', [
             'title'       => __('Notices'),
             'url'         => $core->adminurl->get('admin.plugin.logNotices'),
             'small-icon'  => urldecode(dcPage::getPF('logNotices/icon.png')),
             'large-icon'  => urldecode(dcPage::getPF('logNotices/icon-big.png')),
             'permissions' => $core->auth->isSuperAdmin()
-        ));
+        ]);
     }
 
     public static function adminBlogPreferencesForm($core, $settings)
@@ -96,10 +96,10 @@ class logNoticesBehaviors
     {
         $core->blog->settings->addNamespace('logNotices');
         if ($core->blog->settings->logNotices->active && !$core->blog->settings->logNotices->error_only) {
-            $type = array(
+            $type = [
                 'success' => 'dc-success',
                 'warning' => 'dc-warning',
-                'error'   => 'dc-error');
+                'error'   => 'dc-error'];
 
             $table = isset($type[$notice['class']]) ? $type[$notice['class']] : 'dc-notice';
             $msg   = $notice['text'];

@@ -25,7 +25,7 @@ class adminLogNoticesList extends adminGenericList
             }
         } else {
             $pager   = new dcPager($page, $this->rs_count, $nb_per_page, 10);
-            $entries = array();
+            $entries = [];
             if (isset($_REQUEST['entries'])) {
                 foreach ($_REQUEST['entries'] as $v) {
                     $entries[(integer) $v] = true;
@@ -41,14 +41,14 @@ class adminLogNoticesList extends adminGenericList
                 $html_block .= '<caption>' . sprintf(__('List of notices (%s)'), $this->rs_count) . '</caption>';
             }
 
-            $cols = array(
+            $cols = [
                 'user'    => '<th colspan="2" class="first">' . __('User') . '</th>',
                 'blog'    => '<th scope="col">' . __('Blog') . '</th>',
                 'type'    => '<th scope="col">' . __('Log type') . '</th>',
                 'date'    => '<th scope="col">' . __('Date') . '</th>',
                 'ip'      => '<th scope="col">' . __('IP') . '</th>',
                 'message' => '<th scope="col">' . __('Message') . '</th>'
-            );
+            ];
             $cols = new ArrayObject($cols);
             $html_block .= '<tr>' . implode(iterator_to_array($cols)) . '</tr>%s</table></div>';
             if ($enclose_block) {
@@ -70,9 +70,9 @@ class adminLogNoticesList extends adminGenericList
     {
         $res = '<tr class="line"' . ' id="p' . $this->rs->log_id . '">';
 
-        $cols = array(
+        $cols = [
             'check'   => '<td class="nowrap">' .
-            form::checkbox(array('entries[]'), $this->rs->log_id, $checked, '', '') .
+            form::checkbox(['entries[]'], $this->rs->log_id, $checked, '', '') .
             '</td>',
             'user'    => '<td class="nowrap">' . html::escapeHTML($this->rs->user_id) . '</td>',
             'blog'    => '<td class="nowrap">' . html::escapeHTML($this->rs->blog_id) . '</td>',
@@ -83,7 +83,7 @@ class adminLogNoticesList extends adminGenericList
             '</td>',
             'ip'      => '<td class="nowrap">' . $this->rs->log_ip . '</td>',
             'message' => '<td class="maximal">' . html::escapeHTML($this->rs->log_msg) . '</td>'
-        );
+        ];
         $cols = new ArrayObject($cols);
 
         $res .= implode(iterator_to_array($cols));
