@@ -52,10 +52,10 @@ if ($log_actions->process()) {
 echo
 dcPage::jsLoad('js/jquery/jquery-ui.custom.js') .
 dcPage::jsLoad('js/jquery/jquery.ui.touch-punch.js') .
-dcPage::jsLoad(dcPage::getPF('logNotices/list.js')) .
-'<script type="text/javascript">' . "\n" .
-dcPage::jsVar('dotclear.msg.confirm_delete_notices', __("Are you sure you want to delete selected notices?")) .
-    '</script>';
+dcPage::jsJson('lognotices', [
+    'confirm_delete_notices' => __("Are you sure you want to delete selected notices?")
+]) .
+dcPage::jsLoad(dcPage::getPF('logNotices/list.js'));
 ?>
 </head>
 
