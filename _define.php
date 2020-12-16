@@ -19,7 +19,7 @@ $this->registerModule(
     "Franck Paul and contributors",                    // Author
     '0.1',                                             // Version
     [
-        'requires'    => [['core', '2.13']],               // Dependencies
+        'requires'    => [['core', '2.17']],               // Dependencies
         'permissions' => 'usage,contentadmin',             // Permissions
         'type'        => 'plugin',                         // Type
         'settings'    => ['blog' => '#params.logNotices'] // Settings

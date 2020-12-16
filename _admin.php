@@ -104,7 +104,7 @@ class logNoticesBehaviors
             $table = isset($type[$notice['class']]) ? $type[$notice['class']] : 'dc-notice';
             $msg   = $notice['text'];
             if (!isset($notice['with_ts']) || ($notice['with_ts'] == true)) {
-                $msg = dt::str(__('[%H:%M:%S]'), $notice['ts'], $core->auth->getInfo('user_tz')) . ' ' . $msg;
+                $msg  = $notice['ts'] . ' ' . $msg;
             }
             self::addLogNotice($core, $table, $msg);
         }
