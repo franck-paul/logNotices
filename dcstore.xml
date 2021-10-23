@@ -4,7 +4,7 @@
     <version>0.1</version>
     <author>Franck Paul and contributors</author>
     <desc>Store all or error only notices in the database</desc>
-    <file>https://github.com/franck-paul/logNotices/releases/download/0.1/plugin-logNotices.zip</file>
+    <file>https://github.com/franck-paul/logNotices/releases/download/0.1/plugin-logNotices-0.1.zip</file>
     <da:dcmin>2.17</da:dcmin>
     <da:details>https://open-time.net/?q=logNotices</da:details>
     <da:support>https://github.com/franck-paul/logNotices</da:support>
