@@ -1,8 +1,8 @@
 <modules xmlns:da="http://dotaddict.org/da/">
   <module id="logNotices">
-    <name>Store notices in log table</name>
+    <name>Store all or error only notices in the database</name>
     <version>0.1</version>
-    <author>Franck Paul and contributors</author>
+    <author>Store all or error only notices in the database</author>
     <desc>Store all or error only notices in the database</desc>
     <file>https://github.com/franck-paul/logNotices/releases/download/0.1/plugin-logNotices-0.1.zip</file>
     <da:dcmin>2.17</da:dcmin>
