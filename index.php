@@ -31,15 +31,15 @@ $params['limit'] = [(($page - 1) * $nb_per_page), $nb_per_page];
 $params['order'] = 'log_dt DESC';
 
 try {
-    $lines    = $core->log->getLogs($params);
-    $counter  = $core->log->getLogs($params, true);
-    $log_list = new adminLogNoticesList($core, $lines, $counter->f(0));
+    $lines    = dcCore::app()->log->getLogs($params);
+    $counter  = dcCore::app()->log->getLogs($params, true);
+    $log_list = new adminLogNoticesList(dcCore::app(), $lines, $counter->f(0));
 } catch (Exception $e) {
-    $core->error->add($e->getMessage());
+    dcCore::app()->error->add($e->getMessage());
 }
 
 // Cope with actions
-$log_actions = new dcLogNoticesActionsPage($core, 'plugin.php', ['p' => 'logNotices']);
+$log_actions = new dcLogNoticesActionsPage(dcCore::app(), 'plugin.php', ['p' => 'logNotices']);
 if ($log_actions->process()) {
     return;
 }
@@ -64,8 +64,8 @@ dcPage::jsModuleLoad('logNotices/list.js');
 <?php
 echo dcPage::breadcrumb(
     [
-        html::escapeHTML($core->blog->name) => '',
-        __('Notifications in database')     => '',
+        html::escapeHTML(dcCore::app()->blog->name) => '',
+        __('Notifications in database')             => '',
     ]
 );
 
@@ -76,11 +76,11 @@ if (!empty($msg)) {
 if (!empty($_GET['del'])) {
     dcPage::success(__('Selected notices have been successfully deleted.'));
 }
-if (!$core->error->flag()) {
+if (!dcCore::app()->error->flag()) {
     $log_list->display(     // @phpstan-ignore-line
         $page,
         $nb_per_page,
-        '<form action="' . $core->adminurl->get('admin.plugin') . '" method="post" id="form-notices">' .
+        '<form action="' . dcCore::app()->adminurl->get('admin.plugin') . '" method="post" id="form-notices">' .
 
         '%s' .
 
@@ -92,7 +92,7 @@ if (!$core->error->flag()) {
         '<input id="do-action" type="submit" value="' . __('ok') . '" />' .
         form::hidden(['p'], 'pages') .
         form::hidden(['act'], 'list') .
-        $core->formNonce() .
+        dcCore::app()->formNonce() .
         '</p></div>' .
         '</form>'
     );
