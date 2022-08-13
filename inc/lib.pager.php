@@ -10,8 +10,9 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-
-if (!defined('DC_RC_PATH')) {return;}
+if (!defined('DC_RC_PATH')) {
+    return;
+}
 
 class adminLogNoticesList extends adminGenericList
 {
@@ -28,11 +29,10 @@ class adminLogNoticesList extends adminGenericList
             $entries = [];
             if (isset($_REQUEST['entries'])) {
                 foreach ($_REQUEST['entries'] as $v) {
-                    $entries[(integer) $v] = true;
+                    $entries[(int) $v] = true;
                 }
             }
-            $html_block =
-                '<div class="table-outer">' .
+            $html_block = '<div class="table-outer">' .
                 '<table>';
 
             if ($filter) {
@@ -47,7 +47,7 @@ class adminLogNoticesList extends adminGenericList
                 'type'    => '<th scope="col">' . __('Log type') . '</th>',
                 'date'    => '<th scope="col">' . __('Date') . '</th>',
                 'ip'      => '<th scope="col">' . __('IP') . '</th>',
-                'message' => '<th scope="col">' . __('Message') . '</th>'
+                'message' => '<th scope="col">' . __('Message') . '</th>',
             ];
             $cols = new ArrayObject($cols);
             $html_block .= '<tr>' . implode(iterator_to_array($cols)) . '</tr>%s</table></div>';
@@ -71,18 +71,21 @@ class adminLogNoticesList extends adminGenericList
         $res = '<tr class="line"' . ' id="p' . $this->rs->log_id . '">';
 
         $cols = [
-            'check'   => '<td class="nowrap">' .
+            'check' => '<td class="nowrap">' .
             form::checkbox(['entries[]'], $this->rs->log_id, $checked, '', '') .
             '</td>',
-            'user'    => '<td class="nowrap">' . html::escapeHTML($this->rs->user_id) . '</td>',
-            'blog'    => '<td class="nowrap">' . html::escapeHTML($this->rs->blog_id) . '</td>',
-            'type'    => '<td class="nowrap">' . html::escapeHTML($this->rs->log_table) . '</td>',
-            'date'    => '<td class="nowrap count">' .
-            dt::str(__('%Y/%m/%d %H:%M:%S'), strtotime($this->rs->log_dt),
-                $this->core->auth->getInfo('user_tz')) .
+            'user' => '<td class="nowrap">' . html::escapeHTML($this->rs->user_id) . '</td>',
+            'blog' => '<td class="nowrap">' . html::escapeHTML($this->rs->blog_id) . '</td>',
+            'type' => '<td class="nowrap">' . html::escapeHTML($this->rs->log_table) . '</td>',
+            'date' => '<td class="nowrap count">' .
+            dt::str(
+                __('%Y/%m/%d %H:%M:%S'),
+                strtotime($this->rs->log_dt),
+                dcCore::app()->auth->getInfo('user_tz')
+            ) .
             '</td>',
             'ip'      => '<td class="nowrap">' . $this->rs->log_ip . '</td>',
-            'message' => '<td class="maximal">' . html::escapeHTML($this->rs->log_msg) . '</td>'
+            'message' => '<td class="maximal">' . html::escapeHTML($this->rs->log_msg) . '</td>',
         ];
         $cols = new ArrayObject($cols);
 

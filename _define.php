@@ -18,15 +18,15 @@ $this->registerModule(
     'Store notices in log table',                      // Name
     'Store all or error only notices in the database', // Description
     'Franck Paul and contributors',                    // Author
-    '0.1',                                             // Version
+    '0.2',
     [
-        'requires'    => [['core', '2.17']],               // Dependencies
+        'requires'    => [['core', '2.23']],               // Dependencies
         'permissions' => 'usage,contentadmin',             // Permissions
         'type'        => 'plugin',                         // Type
         'settings'    => ['blog' => '#params.logNotices'], // Settings
 
         'details'    => 'https://open-time.net/?q=logNotices',       // Details URL
         'support'    => 'https://github.com/franck-paul/logNotices', // Support URL
-        'repository' => 'https://raw.githubusercontent.com/franck-paul/logNotices/master/dcstore.xml'
+        'repository' => 'https://raw.githubusercontent.com/franck-paul/logNotices/master/dcstore.xml',
     ]
 );

@@ -10,27 +10,30 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-
-if (!defined('DC_RC_PATH')) {return;}
+if (!defined('DC_RC_PATH')) {
+    return;
+}
 
 class dcLogNoticesActionsPage extends dcActionsPage
 {
-    public function __construct($core, $uri, $redirect_args = [])
+    public function __construct($core = null, $uri, $redirect_args = [])
     {
-        parent::__construct($core, $uri, $redirect_args);
+        parent::__construct(dcCore::app(), $uri, $redirect_args);
         $this->redirect_fields = [];
         $this->caller_title    = __('Notices');
     }
 
     public function error(Exception $e)
     {
-        $this->core->error->add($e->getMessage());
-        $this->beginPage(dcPage::breadcrumb(
-            [
-                html::escapeHTML($this->core->blog->name) => '',
-                __('Notices')                             => $this->getRedirection(true),
-                __('Notices actions')                     => ''
-            ])
+        dcCore::app()->error->add($e->getMessage());
+        $this->beginPage(
+            dcPage::breadcrumb(
+                [
+                    html::escapeHTML(dcCore::app()->blog->name) => '',
+                    __('Notices')                               => $this->getRedirection(true),
+                    __('Notices actions')                       => '',
+                ]
+            )
         );
         $this->endPage();
     }
@@ -52,12 +55,12 @@ class dcLogNoticesActionsPage extends dcActionsPage
     protected function fetchEntries($from)
     {
         $params = [
-            'log_table' => ['dc-sys-error', 'dc-success', 'dc-warning', 'dc-error', 'dc-notice']
+            'log_table' => ['dc-sys-error', 'dc-success', 'dc-warning', 'dc-error', 'dc-notice'],
         ];
         if (!empty($from['entries'])) {
             $entries = $from['entries'];
             foreach ($entries as $k => $v) {
-                $entries[$k] = (integer) $v;
+                $entries[$k] = (int) $v;
             }
 
             $params['sql'] = 'AND L.log_id IN(' . implode(',', $entries) . ') ';
@@ -65,7 +68,7 @@ class dcLogNoticesActionsPage extends dcActionsPage
             $params['sql'] = 'AND 1=0 ';
         }
 
-        $lines    = $this->core->log->getLogs($params);
+        $lines    = dcCore::app()->log->getLogs($params);
         $this->rs = $lines;
     }
 }

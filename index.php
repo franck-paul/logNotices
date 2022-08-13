@@ -10,20 +10,21 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-
-if (!defined('DC_CONTEXT_ADMIN')) {return;}
+if (!defined('DC_CONTEXT_ADMIN')) {
+    return;
+}
 dcPage::checkSuper();
 
 // Get current list of stored notices
 $params = [
-    'log_table' => ['dc-sys-error', 'dc-success', 'dc-warning', 'dc-error', 'dc-notice']
+    'log_table' => ['dc-sys-error', 'dc-success', 'dc-warning', 'dc-error', 'dc-notice'],
 ];
 
-$page        = !empty($_GET['page']) ? max(1, (integer) $_GET['page']) : 1;
+$page        = !empty($_GET['page']) ? max(1, (int) $_GET['page']) : 1;
 $nb_per_page = 30;
 
-if (!empty($_GET['nb']) && (integer) $_GET['nb'] > 0) {
-    $nb_per_page = (integer) $_GET['nb'];
+if (!empty($_GET['nb']) && (int) $_GET['nb'] > 0) {
+    $nb_per_page = (int) $_GET['nb'];
 }
 
 $params['limit'] = [(($page - 1) * $nb_per_page), $nb_per_page];
@@ -53,9 +54,9 @@ echo
 dcPage::jsLoad('js/jquery/jquery-ui.custom.js') .
 dcPage::jsLoad('js/jquery/jquery.ui.touch-punch.js') .
 dcPage::jsJson('lognotices', [
-    'confirm_delete_notices' => __("Are you sure you want to delete selected notices?")
+    'confirm_delete_notices' => __('Are you sure you want to delete selected notices?'),
 ]) .
-dcPage::jsLoad(dcPage::getPF('logNotices/list.js'));
+dcPage::jsModuleLoad('logNotices/list.js');
 ?>
 </head>
 
@@ -64,8 +65,9 @@ dcPage::jsLoad(dcPage::getPF('logNotices/list.js'));
 echo dcPage::breadcrumb(
     [
         html::escapeHTML($core->blog->name) => '',
-        __('Notifications in database')     => ''
-    ]);
+        __('Notifications in database')     => '',
+    ]
+);
 
 if (!empty($msg)) {
     dcPage::success($msg);
@@ -75,7 +77,9 @@ if (!empty($_GET['del'])) {
     dcPage::success(__('Selected notices have been successfully deleted.'));
 }
 if (!$core->error->flag()) {
-    $log_list->display($page, $nb_per_page,
+    $log_list->display(     // @phpstan-ignore-line
+        $page,
+        $nb_per_page,
         '<form action="' . $core->adminurl->get('admin.plugin') . '" method="post" id="form-notices">' .
 
         '%s' .
@@ -90,7 +94,8 @@ if (!$core->error->flag()) {
         form::hidden(['act'], 'list') .
         $core->formNonce() .
         '</p></div>' .
-        '</form>');
+        '</form>'
+    );
 }
 ?>
 </body>
