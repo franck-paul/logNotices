@@ -16,7 +16,7 @@ if (!defined('DC_RC_PATH')) {
 
 class dcLogNoticesActionsPage extends dcActionsPage
 {
-    public function __construct($core = null, $uri, $redirect_args = [])
+    public function __construct($core, $uri, $redirect_args = [])
     {
         parent::__construct(dcCore::app(), $uri, $redirect_args);
         $this->redirect_fields = [];

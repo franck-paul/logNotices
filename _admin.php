@@ -41,7 +41,7 @@ dcCore::app()->addBehavior('adminPageNotification', ['logNoticesBehaviors', 'adm
 
 class logNoticesBehaviors
 {
-    public static function adminDashboardFavorites($core = null, $favs)
+    public static function adminDashboardFavorites($core, $favs)
     {
         $favs->register('logNotices', [
             'title'       => __('Notices'),
@@ -52,7 +52,7 @@ class logNoticesBehaviors
         ]);
     }
 
-    public static function adminBlogPreferencesForm($core = null, $settings)
+    public static function adminBlogPreferencesForm($core, $settings)
     {
         $settings->addNameSpace('logNotices');
         echo
@@ -74,7 +74,7 @@ class logNoticesBehaviors
         $settings->logNotices->put('error_only', !empty($_POST['lognotices_error_only']), 'boolean');
     }
 
-    private static function addLogNotice($core = null, $table, $message)
+    private static function addLogNotice($core, $table, $message)
     {
         // Add new log
         $cur = dcCore::app()->con->openCursor(dcCore::app()->prefix . 'log');
@@ -86,7 +86,7 @@ class logNoticesBehaviors
         dcCore::app()->log->addLog($cur);
     }
 
-    public static function adminPageNotificationError($core = null, $err)
+    public static function adminPageNotificationError($core, $err)
     {
         dcCore::app()->blog->settings->addNamespace('logNotices');
         if (dcCore::app()->blog->settings->logNotices->active) {
@@ -95,7 +95,7 @@ class logNoticesBehaviors
         }
     }
 
-    public static function adminPageNotification($core = null, $notice)
+    public static function adminPageNotification($core, $notice)
     {
         dcCore::app()->blog->settings->addNamespace('logNotices');
         if (dcCore::app()->blog->settings->logNotices->active && !dcCore::app()->blog->settings->logNotices->error_only) {
