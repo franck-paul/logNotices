@@ -33,13 +33,13 @@ $params['order'] = 'log_dt DESC';
 try {
     $lines    = dcCore::app()->log->getLogs($params);
     $counter  = dcCore::app()->log->getLogs($params, true);
-    $log_list = new adminLogNoticesList(dcCore::app(), $lines, $counter->f(0));
+    $log_list = new adminLogNoticesList($lines, $counter->f(0));
 } catch (Exception $e) {
     dcCore::app()->error->add($e->getMessage());
 }
 
 // Cope with actions
-$log_actions = new dcLogNoticesActionsPage(dcCore::app(), 'plugin.php', ['p' => 'logNotices']);
+$log_actions = new dcLogNoticesActions('plugin.php', ['p' => 'logNotices']);
 if ($log_actions->process()) {
     return;
 }

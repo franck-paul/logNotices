@@ -10,15 +10,11 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-if (!defined('DC_RC_PATH')) {
-    return;
-}
-
-class dcLogNoticesActionsPage extends dcActionsPage
+class dcLogNoticesActions extends dcActions
 {
-    public function __construct($core, $uri, $redirect_args = [])
+    public function __construct($uri, $redirect_args = [])
     {
-        parent::__construct(dcCore::app(), $uri, $redirect_args);
+        parent::__construct($uri, $redirect_args);
         $this->redirect_fields = [];
         $this->caller_title    = __('Notices');
     }

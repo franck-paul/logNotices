@@ -22,5 +22,7 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 
 // Admin mode
 
-$__autoload['dcLogNoticesActionsPage'] = __DIR__ . '/inc/class.dcactions.php';
-$__autoload['adminLogNoticesList']     = __DIR__ . '/inc/lib.pager.php';
+Clearbricks::lib()->autoload([
+    'dcLogNoticesActions' => __DIR__ . '/inc/class.dcactions.php',
+    'adminLogNoticesList' => __DIR__ . '/inc/lib.pager.php',
+]);

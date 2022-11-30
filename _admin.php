@@ -17,42 +17,19 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 // dead but useful code, in order to have translations
 __('Store notices in database') . __('Store all or error only notices in the database');
 
-if (dcCore::app()->auth->isSuperAdmin()) {
-    // Register menu
-    $_menu['System']->addItem(
-        __('Notices'),
-        dcCore::app()->adminurl->get('admin.plugin.logNotices'),
-        urldecode(dcPage::getPF('logNotices/icon.png')),
-        preg_match('/' . preg_quote(dcCore::app()->adminurl->get('admin.plugin.logNotices')) . '(&.*)/', $_SERVER['REQUEST_URI']),
-        dcCore::app()->auth->isSuperAdmin()
-    );
-
-    // Register favorite
-    dcCore::app()->addBehavior('adminDashboardFavorites', ['logNoticesBehaviors', 'adminDashboardFavorites']);
-
-    // Settings behaviors
-    dcCore::app()->addBehavior('adminBlogPreferencesForm', ['logNoticesBehaviors', 'adminBlogPreferencesForm']);
-    dcCore::app()->addBehavior('adminBeforeBlogSettingsUpdate', ['logNoticesBehaviors', 'adminBeforeBlogSettingsUpdate']);
-}
-
-// Store error and standard DC notices in the database
-dcCore::app()->addBehavior('adminPageNotificationError', ['logNoticesBehaviors', 'adminPageNotificationError']);
-dcCore::app()->addBehavior('adminPageNotification', ['logNoticesBehaviors', 'adminPageNotification']);
-
 class logNoticesBehaviors
 {
-    public static function adminDashboardFavorites($core, $favs)
+    public static function adminDashboardFavorites($favs)
     {
         $favs->register('logNotices', [
-            'title'       => __('Notices'),
-            'url'         => dcCore::app()->adminurl->get('admin.plugin.logNotices'),
-            'small-icon'  => urldecode(dcPage::getPF('logNotices/icon.png')),
-            'large-icon'  => urldecode(dcPage::getPF('logNotices/icon-big.png')),
-            'permissions' => dcCore::app()->auth->isSuperAdmin(),
+            'title'      => __('Notices'),
+            'url'        => dcCore::app()->adminurl->get('admin.plugin.logNotices'),
+            'small-icon' => urldecode(dcPage::getPF('logNotices/icon.png')),
+            'large-icon' => urldecode(dcPage::getPF('logNotices/icon-big.png')),
         ]);
     }
 
-    public static function adminBlogPreferencesForm($core, $settings)
+    public static function adminBlogPreferencesForm($settings)
     {
         $settings->addNameSpace('logNotices');
         echo
@@ -77,7 +54,7 @@ class logNoticesBehaviors
     private static function addLogNotice($core, $table, $message)
     {
         // Add new log
-        $cur = dcCore::app()->con->openCursor(dcCore::app()->prefix . 'log');
+        $cur = dcCore::app()->con->openCursor(dcCore::app()->prefix . dcLog::LOG_TABLE_NAME);
 
         $cur->user_id   = dcCore::app()->auth->userID();
         $cur->log_msg   = $message;
@@ -90,7 +67,13 @@ class logNoticesBehaviors
     {
         dcCore::app()->blog->settings->addNamespace('logNotices');
         if (dcCore::app()->blog->settings->logNotices->active) {
-            $msg = (string) $err;
+            if ($err instanceof Exception) {
+                $msg = $err->getMessage();
+            } elseif ($err instanceof dcError) {
+                $msg = $err->toHTML();
+            } else {
+                $msg = (string) $err;
+            }
             self::addLogNotice(dcCore::app(), 'dc-sys-error', $msg);
         }
     }
@@ -106,10 +89,32 @@ class logNoticesBehaviors
 
             $table = $type[$notice['class']] ?? 'dc-notice';
             $msg   = $notice['text'];
-            if (!isset($notice['with_ts']) || ($notice['with_ts'] == true)) {
+            if (!isset($notice['with_ts']) || $notice['with_ts']) {
                 $msg = $notice['ts'] . ' ' . $msg;
             }
             self::addLogNotice(dcCore::app(), $table, $msg);
         }
     }
 }
+
+if (dcCore::app()->auth->isSuperAdmin()) {
+    // Register menu
+    dcCore::app()->menu[dcAdmin::MENU_SYSTEM]->addItem(
+        __('Notices'),
+        dcCore::app()->adminurl->get('admin.plugin.logNotices'),
+        urldecode(dcPage::getPF('logNotices/icon.png')),
+        preg_match('/' . preg_quote(dcCore::app()->adminurl->get('admin.plugin.logNotices')) . '(&.*)/', $_SERVER['REQUEST_URI']),
+        dcCore::app()->auth->isSuperAdmin()
+    );
+
+    // Register favorite
+    dcCore::app()->addBehavior('adminDashboardFavoritesV2', [logNoticesBehaviors::class, 'adminDashboardFavorites']);
+
+    // Settings behaviors
+    dcCore::app()->addBehavior('adminBlogPreferencesFormV2', [logNoticesBehaviors::class, 'adminBlogPreferencesForm']);
+    dcCore::app()->addBehavior('adminBeforeBlogSettingsUpdate', [logNoticesBehaviors::class, 'adminBeforeBlogSettingsUpdate']);
+}
+
+// Store error and standard DC notices in the database
+dcCore::app()->addBehavior('adminPageNotificationError', [logNoticesBehaviors::class, 'adminPageNotificationError']);
+dcCore::app()->addBehavior('adminPageNotification', [logNoticesBehaviors::class, 'adminPageNotification']);

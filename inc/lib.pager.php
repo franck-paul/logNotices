@@ -10,11 +10,7 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-if (!defined('DC_RC_PATH')) {
-    return;
-}
-
-class adminLogNoticesList extends adminGenericList
+class adminLogNoticesList extends adminGenericListV2
 {
     public function display($page, $nb_per_page, $enclose_block = '', $filter = false)
     {

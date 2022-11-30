@@ -15,18 +15,21 @@ if (!defined('DC_RC_PATH')) {
 }
 
 $this->registerModule(
-    'Store notices in log table',                      // Name
-    'Store all or error only notices in the database', // Description
-    'Franck Paul and contributors',                    // Author
-    '0.3.1',
+    'Store notices in log table',
+    'Store all or error only notices in the database',
+    'Franck Paul and contributors',
+    '1.0',
     [
-        'requires'    => [['core', '2.23']],               // Dependencies
-        'permissions' => 'usage,contentadmin',             // Permissions
-        'type'        => 'plugin',                         // Type
-        'settings'    => ['blog' => '#params.logNotices'], // Settings
+        'requires'    => [['core', '2.24']],
+        'permissions' => dcCore::app()->auth->makePermissions([
+            dcAuth::PERMISSION_USAGE,
+            dcAuth::PERMISSION_CONTENT_ADMIN,
+        ]),
+        'type'     => 'plugin',
+        'settings' => ['blog' => '#params.logNotices'],
 
-        'details'    => 'https://open-time.net/?q=logNotices',       // Details URL
-        'support'    => 'https://github.com/franck-paul/logNotices', // Support URL
+        'details'    => 'https://open-time.net/?q=logNotices',
+        'support'    => 'https://github.com/franck-paul/logNotices',
         'repository' => 'https://raw.githubusercontent.com/franck-paul/logNotices/master/dcstore.xml',
     ]
 );
