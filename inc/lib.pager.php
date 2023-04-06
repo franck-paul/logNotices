@@ -10,6 +10,9 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+
+use Dotclear\Helper\Html\Html;
+
 class adminLogNoticesList extends adminGenericListV2
 {
     public function display($page, $nb_per_page, $enclose_block = '', $filter = false)
@@ -70,9 +73,9 @@ class adminLogNoticesList extends adminGenericListV2
             'check' => '<td class="nowrap">' .
             form::checkbox(['entries[]'], $this->rs->log_id, $checked, '', '') .
             '</td>',
-            'user' => '<td class="nowrap">' . html::escapeHTML($this->rs->user_id) . '</td>',
-            'blog' => '<td class="nowrap">' . html::escapeHTML($this->rs->blog_id) . '</td>',
-            'type' => '<td class="nowrap">' . html::escapeHTML($this->rs->log_table) . '</td>',
+            'user' => '<td class="nowrap">' . Html::escapeHTML($this->rs->user_id) . '</td>',
+            'blog' => '<td class="nowrap">' . Html::escapeHTML($this->rs->blog_id) . '</td>',
+            'type' => '<td class="nowrap">' . Html::escapeHTML($this->rs->log_table) . '</td>',
             'date' => '<td class="nowrap count">' .
             dt::str(
                 __('%Y/%m/%d %H:%M:%S'),
@@ -81,7 +84,7 @@ class adminLogNoticesList extends adminGenericListV2
             ) .
             '</td>',
             'ip'      => '<td class="nowrap">' . $this->rs->log_ip . '</td>',
-            'message' => '<td class="maximal">' . html::escapeHTML($this->rs->log_msg) . '</td>',
+            'message' => '<td class="maximal">' . Html::escapeHTML($this->rs->log_msg) . '</td>',
         ];
         $cols = new ArrayObject($cols);
 

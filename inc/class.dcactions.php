@@ -10,6 +10,9 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+
+use Dotclear\Helper\Html\Html;
+
 class dcLogNoticesActions extends dcActions
 {
     public function __construct($uri, $redirect_args = [])
@@ -25,7 +28,7 @@ class dcLogNoticesActions extends dcActions
         $this->beginPage(
             dcPage::breadcrumb(
                 [
-                    html::escapeHTML(dcCore::app()->blog->name) => '',
+                    Html::escapeHTML(dcCore::app()->blog->name) => '',
                     __('Notices')                               => $this->getRedirection(true),
                     __('Notices actions')                       => '',
                 ]

@@ -10,6 +10,9 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+
+use Dotclear\Helper\Html\Html;
+
 if (!defined('DC_CONTEXT_ADMIN')) {
     return;
 }
@@ -64,7 +67,7 @@ dcPage::jsModuleLoad('logNotices/list.js');
 <?php
 echo dcPage::breadcrumb(
     [
-        html::escapeHTML(dcCore::app()->blog->name) => '',
+        Html::escapeHTML(dcCore::app()->blog->name) => '',
         __('Notifications in database')             => '',
     ]
 );

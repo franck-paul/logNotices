@@ -31,7 +31,6 @@ class logNoticesBehaviors
 
     public static function adminBlogPreferencesForm($settings)
     {
-        $settings->addNameSpace('logNotices');
         echo
         '<div class="fieldset" id="logNotices"><h4>' . __('Notices') . '</h4>' .
         '<p><label class="classic">' .
@@ -46,7 +45,6 @@ class logNoticesBehaviors
 
     public static function adminBeforeBlogSettingsUpdate($settings)
     {
-        $settings->addNameSpace('logNotices');
         $settings->logNotices->put('active', !empty($_POST['lognotices_active']), 'boolean');
         $settings->logNotices->put('error_only', !empty($_POST['lognotices_error_only']), 'boolean');
     }
@@ -65,7 +63,6 @@ class logNoticesBehaviors
 
     public static function adminPageNotificationError($core, $err)
     {
-        dcCore::app()->blog->settings->addNamespace('logNotices');
         if (dcCore::app()->blog->settings->logNotices->active) {
             if ($err instanceof Exception) {
                 $msg = $err->getMessage();
@@ -80,7 +77,6 @@ class logNoticesBehaviors
 
     public static function adminPageNotification($core, $notice)
     {
-        dcCore::app()->blog->settings->addNamespace('logNotices');
         if (dcCore::app()->blog->settings->logNotices->active && !dcCore::app()->blog->settings->logNotices->error_only) {
             $type = [
                 'success' => 'dc-success',
@@ -107,14 +103,18 @@ if (dcCore::app()->auth->isSuperAdmin()) {
         dcCore::app()->auth->isSuperAdmin()
     );
 
-    // Register favorite
-    dcCore::app()->addBehavior('adminDashboardFavoritesV2', [logNoticesBehaviors::class, 'adminDashboardFavorites']);
+    dcCore::app()->addBehaviors([
+        // Register favorite
+        'adminDashboardFavoritesV2'     => [logNoticesBehaviors::class, 'adminDashboardFavorites'],
 
-    // Settings behaviors
-    dcCore::app()->addBehavior('adminBlogPreferencesFormV2', [logNoticesBehaviors::class, 'adminBlogPreferencesForm']);
-    dcCore::app()->addBehavior('adminBeforeBlogSettingsUpdate', [logNoticesBehaviors::class, 'adminBeforeBlogSettingsUpdate']);
+        // Settings behaviors
+        'adminBlogPreferencesFormV2'    => [logNoticesBehaviors::class, 'adminBlogPreferencesForm'],
+        'adminBeforeBlogSettingsUpdate' => [logNoticesBehaviors::class, 'adminBeforeBlogSettingsUpdate'],
+    ]);
 }
 
 // Store error and standard DC notices in the database
-dcCore::app()->addBehavior('adminPageNotificationError', [logNoticesBehaviors::class, 'adminPageNotificationError']);
-dcCore::app()->addBehavior('adminPageNotification', [logNoticesBehaviors::class, 'adminPageNotification']);
+dcCore::app()->addBehaviors([
+    'adminPageNotificationError' => [logNoticesBehaviors::class, 'adminPageNotificationError'],
+    'adminPageNotification'      => [logNoticesBehaviors::class, 'adminPageNotification'],
+]);
