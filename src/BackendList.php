@@ -10,10 +10,19 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+declare(strict_types=1);
 
+namespace Dotclear\Plugin\logNotices;
+
+use adminGenericListV2;
+use ArrayObject;
+use dcCore;
+use dcPager;
+use Dotclear\Helper\Date;
 use Dotclear\Helper\Html\Html;
+use form;
 
-class adminLogNoticesList extends adminGenericListV2
+class BackendList extends adminGenericListV2
 {
     public function display($page, $nb_per_page, $enclose_block = '', $filter = false)
     {
@@ -77,7 +86,7 @@ class adminLogNoticesList extends adminGenericListV2
             'blog' => '<td class="nowrap">' . Html::escapeHTML($this->rs->blog_id) . '</td>',
             'type' => '<td class="nowrap">' . Html::escapeHTML($this->rs->log_table) . '</td>',
             'date' => '<td class="nowrap count">' .
-            dt::str(
+            Date::str(
                 __('%Y/%m/%d %H:%M:%S'),
                 strtotime($this->rs->log_dt),
                 dcCore::app()->auth->getInfo('user_tz')

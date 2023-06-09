@@ -10,10 +10,17 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+declare(strict_types=1);
 
+namespace Dotclear\Plugin\logNotices;
+
+use dcActions;
+use dcCore;
+use dcPage;
 use Dotclear\Helper\Html\Html;
+use Exception;
 
-class dcLogNoticesActions extends dcActions
+class BackendActions extends dcActions
 {
     public function __construct($uri, $redirect_args = [])
     {

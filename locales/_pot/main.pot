@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 logNotices module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-24 15:15+0100\n"
+"POT-Creation-Date: 2023-06-09 14:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,33 +16,103 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../hg-plugins/logNotices/_admin.php:15
+#: ../git-plugins/logNotices/src/Backend.php:29
 msgid "Store all or error only notices in the database"
 msgstr ""
 
-#: ../hg-plugins/logNotices/_admin.php:15
-#: ../hg-plugins/logNotices/_admin.php:57
+#: ../git-plugins/logNotices/src/Backend.php:29
+#: ../git-plugins/logNotices/src/BackendBehaviors.php:33
 msgid "Store notices in database"
 msgstr ""
 
-#: ../hg-plugins/logNotices/_admin.php:19
-#: ../hg-plugins/logNotices/_admin.php:42
-#: ../hg-plugins/logNotices/_admin.php:54 ../hg-plugins/logNotices/index.php:21
+#: ../git-plugins/logNotices/src/Backend.php:43
+#: ../git-plugins/logNotices/src/Backend.php:53
+#: ../git-plugins/logNotices/src/BackendActions.php:29
+#: ../git-plugins/logNotices/src/BackendActions.php:39
+#: ../git-plugins/logNotices/src/BackendActions.php:49
+#: ../git-plugins/logNotices/src/BackendBehaviors.php:30
+#: ../git-plugins/logNotices/src/Manage.php:93
 msgid "Notices"
 msgstr ""
 
-#: ../hg-plugins/logNotices/_admin.php:61
+#: ../git-plugins/logNotices/src/BackendActions.php:40
+msgid "Notices actions"
+msgstr ""
+
+#: ../git-plugins/logNotices/src/BackendActions.php:53
+msgid "Back to notices list"
+msgstr ""
+
+#: ../git-plugins/logNotices/src/BackendBehaviors.php:34
+msgid "Options"
+msgstr ""
+
+#: ../git-plugins/logNotices/src/BackendBehaviors.php:37
 msgid "Only error notices"
 msgstr ""
 
-#: ../hg-plugins/logNotices/index.php:29
-msgid "Notifications in database"
+#: ../git-plugins/logNotices/src/BackendList.php:31
+msgid "No notice matches the filter"
 msgstr ""
 
-#: ../hg-plugins/logNotices/index.php:46
+#: ../git-plugins/logNotices/src/BackendList.php:33
+msgid "No notice"
+msgstr ""
+
+#: ../git-plugins/logNotices/src/BackendList.php:47
+#, php-format
+msgid "List of %s notices matching the filter."
+msgstr ""
+
+#: ../git-plugins/logNotices/src/BackendList.php:49
+#, php-format
+msgid "List of notices (%s)"
+msgstr ""
+
+#: ../git-plugins/logNotices/src/BackendList.php:53
+msgid "User"
+msgstr ""
+
+#: ../git-plugins/logNotices/src/BackendList.php:54
+msgid "Blog"
+msgstr ""
+
+#: ../git-plugins/logNotices/src/BackendList.php:55
+msgid "Log type"
+msgstr ""
+
+#: ../git-plugins/logNotices/src/BackendList.php:56
+msgid "Date"
+msgstr ""
+
+#: ../git-plugins/logNotices/src/BackendList.php:57
+msgid "IP"
+msgstr ""
+
+#: ../git-plugins/logNotices/src/BackendList.php:58
+msgid "Message"
+msgstr ""
+
+#: ../git-plugins/logNotices/src/BackendList.php:90
 msgid "%Y/%m/%d %H:%M:%S"
 msgstr ""
 
-#: ../hg-plugins/logNotices/index.php:52
-msgid "No dotclear notices stored in database"
+#: ../git-plugins/logNotices/src/Manage.php:89
+msgid "Are you sure you want to delete selected notices?"
+msgstr ""
+
+#: ../git-plugins/logNotices/src/Manage.php:98
+msgid "Notifications in database"
+msgstr ""
+
+#: ../git-plugins/logNotices/src/Manage.php:104
+msgid "Selected notices have been successfully deleted."
+msgstr ""
+
+#: ../git-plugins/logNotices/src/Manage.php:142
+msgid "Selected notices action:"
+msgstr ""
+
+#: ../git-plugins/logNotices/src/Manage.php:144
+msgid "ok"
 msgstr ""
