@@ -66,7 +66,7 @@ class Manage extends dcNsProcess
         }
 
         // Cope with actions
-        $log_actions = new BackendActions('plugin.php', ['p' => 'logNotices']);
+        $log_actions = new BackendActions(dcCore::app()->adminurl->get('admin.plugin.' . My::id()));
         if ($log_actions->process()) {
             return true;
         }
@@ -127,7 +127,7 @@ class Manage extends dcNsProcess
             dcCore::app()->error->add($e->getMessage());
         }
 
-        $log_actions = new BackendActions('plugin.php', ['p' => 'logNotices']);
+        $log_actions = new BackendActions(dcCore::app()->adminurl->get('admin.plugin.' . My::id()));
 
         $log_list->display(     // @phpstan-ignore-line
             $page,
