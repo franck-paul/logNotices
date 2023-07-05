@@ -16,7 +16,7 @@ $this->registerModule(
     'Franck Paul and contributors',
     '2.1.1',
     [
-        'requires'    => [['core', '2.26']],
+        'requires'    => [['core', '2.27']],
         'permissions' => dcCore::app()->auth->makePermissions([
             dcAuth::PERMISSION_USAGE,
             dcAuth::PERMISSION_CONTENT_ADMIN,

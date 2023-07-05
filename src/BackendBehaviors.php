@@ -64,7 +64,7 @@ class BackendBehaviors
             if ($err instanceof Exception) {
                 $msg = $err->getMessage();
             } elseif ($err instanceof dcError) {
-                $msg = $err->toHTML();
+                $msg = $err->toHTML(false);
             } else {
                 $msg = (string) $err;
             }
