@@ -14,7 +14,7 @@ $this->registerModule(
     'Store notices in log table',
     'Store all or error only notices in the database',
     'Franck Paul and contributors',
-    '2.1.1',
+    '2.2',
     [
         'requires'    => [['core', '2.27']],
         'permissions' => dcCore::app()->auth->makePermissions([
