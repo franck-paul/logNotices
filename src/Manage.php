@@ -88,8 +88,7 @@ class Manage extends dcNsProcess
         dcPage::jsLoad('js/jquery/jquery.ui.touch-punch.js') .
         dcPage::jsJson('lognotices', [
             'confirm_delete_notices' => __('Are you sure you want to delete selected notices?'),
-        ]) .
-        dcPage::jsModuleLoad(My::id() . '/list.js');
+        ]);
 
         dcPage::openModule(__('Notices'), $head);
 
