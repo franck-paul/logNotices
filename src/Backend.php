@@ -16,8 +16,8 @@ namespace Dotclear\Plugin\logNotices;
 
 use dcAdmin;
 use dcCore;
-use dcFavorites;
 use dcNsProcess;
+use Dotclear\Core\Backend\Favorites;
 
 class Backend extends dcNsProcess
 {
@@ -49,7 +49,7 @@ class Backend extends dcNsProcess
             );
 
             /* Register favorite */
-            dcCore::app()->addBehavior('adminDashboardFavoritesV2', function (dcFavorites $favs) {
+            dcCore::app()->addBehavior('adminDashboardFavoritesV2', function (Favorites $favs) {
                 $favs->register('logNotices', [
                     'title'      => __('Notices'),
                     'url'        => My::makeUrl(),

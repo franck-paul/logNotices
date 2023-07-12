@@ -67,7 +67,7 @@ class Manage extends dcNsProcess
         }
 
         // Cope with actions
-        $log_actions = new BackendActions(dcCore::app()->adminurl->get('admin.plugin.' . My::id()));
+        $log_actions = new BackendActions(dcCore::app()->admin->url->get('admin.plugin.' . My::id()));
         if ($log_actions->process()) {
             return true;
         }

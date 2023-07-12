@@ -14,13 +14,13 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\logNotices;
 
-use dcActions;
 use dcCore;
 use dcPage;
+use Dotclear\Core\Backend\Action\Actions;
 use Dotclear\Helper\Html\Html;
 use Exception;
 
-class BackendActions extends dcActions
+class BackendActions extends Actions
 {
     public function __construct($uri, $redirect_args = [])
     {
