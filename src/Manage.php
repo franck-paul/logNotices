@@ -15,23 +15,21 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\logNotices;
 
 use dcCore;
-use dcNsProcess;
-use dcPage;
+use Dotclear\Core\Backend\Notices;
+use Dotclear\Core\Backend\Page;
+use Dotclear\Core\Process;
 use Dotclear\Helper\Html\Html;
 use Exception;
 use form;
 
-class Manage extends dcNsProcess
+class Manage extends Process
 {
-    protected static $init = false; /** @deprecated since 2.27 */
     /**
      * Initializes the page.
      */
     public static function init(): bool
     {
-        static::$init = My::checkContext(My::MANAGE);
-
-        return static::$init;
+        return self::status(My::checkContext(My::MANAGE));
     }
 
     /**
@@ -39,7 +37,7 @@ class Manage extends dcNsProcess
      */
     public static function process(): bool
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return false;
         }
 
@@ -80,28 +78,28 @@ class Manage extends dcNsProcess
      */
     public static function render(): void
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return;
         }
 
-        $head = dcPage::jsLoad('js/jquery/jquery-ui.custom.js') .
-        dcPage::jsLoad('js/jquery/jquery.ui.touch-punch.js') .
-        dcPage::jsJson('lognotices', [
+        $head = Page::jsLoad('js/jquery/jquery-ui.custom.js') .
+        Page::jsLoad('js/jquery/jquery.ui.touch-punch.js') .
+        Page::jsJson('lognotices', [
             'confirm_delete_notices' => __('Are you sure you want to delete selected notices?'),
         ]);
 
-        dcPage::openModule(__('Notices'), $head);
+        Page::openModule(__('Notices'), $head);
 
-        echo dcPage::breadcrumb(
+        echo Page::breadcrumb(
             [
                 Html::escapeHTML(dcCore::app()->blog->name) => '',
                 __('Notifications in database')             => '',
             ]
         );
-        echo dcPage::notices();
+        echo Notices::getNotices();
 
         if (!empty($_GET['del'])) {
-            dcPage::success(__('Selected notices have been successfully deleted.'));
+            Notices::success(__('Selected notices have been successfully deleted.'));
         }
 
         // Get current list of stored notices
@@ -127,12 +125,12 @@ class Manage extends dcNsProcess
             dcCore::app()->error->add($e->getMessage());
         }
 
-        $log_actions = new BackendActions(dcCore::app()->adminurl->get('admin.plugin.' . My::id()));
+        $log_actions = new BackendActions(dcCore::app()->admin->url->get('admin.plugin.' . My::id()));
 
         $log_list->display(     // @phpstan-ignore-line
             $page,
             $nb_per_page,
-            '<form action="' . dcCore::app()->adminurl->get('admin.plugin') . '" method="post" id="form-notices">' .
+            '<form action="' . dcCore::app()->admin->url->get('admin.plugin') . '" method="post" id="form-notices">' .
 
             '%s' .
 
@@ -149,6 +147,6 @@ class Manage extends dcNsProcess
             '</form>'
         );
 
-        dcPage::closeModule();
+        Page::closeModule();
     }
 }

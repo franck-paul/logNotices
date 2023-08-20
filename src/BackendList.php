@@ -14,15 +14,15 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\logNotices;
 
-use adminGenericListV2;
 use ArrayObject;
 use dcCore;
-use dcPager;
+use Dotclear\Core\Backend\Listing\Listing;
+use Dotclear\Core\Backend\Listing\Pager;
 use Dotclear\Helper\Date;
 use Dotclear\Helper\Html\Html;
 use form;
 
-class BackendList extends adminGenericListV2
+class BackendList extends Listing
 {
     public function display($page, $nb_per_page, $enclose_block = '', $filter = false)
     {
@@ -33,7 +33,7 @@ class BackendList extends adminGenericListV2
                 echo '<p><strong>' . __('No notice') . '</strong></p>';
             }
         } else {
-            $pager   = new dcPager($page, $this->rs_count, $nb_per_page, 10);
+            $pager   = new Pager($page, $this->rs_count, $nb_per_page, 10);
             $entries = [];
             if (isset($_REQUEST['entries'])) {
                 foreach ($_REQUEST['entries'] as $v) {

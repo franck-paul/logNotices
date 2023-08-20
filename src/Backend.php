@@ -14,35 +14,32 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\logNotices;
 
-use dcAdmin;
 use dcCore;
-use dcNsProcess;
 use Dotclear\Core\Backend\Favorites;
+use Dotclear\Core\Backend\Menus;
+use Dotclear\Core\Process;
 
-class Backend extends dcNsProcess
+class Backend extends Process
 {
-    protected static $init = false; /** @deprecated since 2.27 */
     public static function init(): bool
     {
-        static::$init = My::checkContext(My::BACKEND);
-
         // dead but useful code, in order to have translations
         __('Store notices in database') . __('Store all or error only notices in the database');
 
-        return static::$init;
+        return self::status(My::checkContext(My::BACKEND));
     }
 
     public static function process(): bool
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return false;
         }
 
         if (My::checkContext(My::MANAGE)) {
             // Register menu
-            dcCore::app()->menu[dcAdmin::MENU_SYSTEM]->addItem(
+            dcCore::app()->admin->menus[Menus::MENU_SYSTEM]->addItem(
                 __('Notices'),
-                My::makeUrl(),
+                My::manageUrl(),
                 My::icons(),
                 preg_match(My::urlScheme(), $_SERVER['REQUEST_URI']),
                 My::checkContext(My::MENU)
@@ -52,7 +49,7 @@ class Backend extends dcNsProcess
             dcCore::app()->addBehavior('adminDashboardFavoritesV2', function (Favorites $favs) {
                 $favs->register('logNotices', [
                     'title'      => __('Notices'),
-                    'url'        => My::makeUrl(),
+                    'url'        => My::manageUrl(),
                     'small-icon' => My::icons(),
                     'large-icon' => My::icons(),
                 ]);
@@ -60,15 +57,15 @@ class Backend extends dcNsProcess
 
             dcCore::app()->addBehaviors([
                 // Settings behaviors
-                'adminBlogPreferencesFormV2'    => [BackendBehaviors::class, 'adminBlogPreferencesForm'],
-                'adminBeforeBlogSettingsUpdate' => [BackendBehaviors::class, 'adminBeforeBlogSettingsUpdate'],
+                'adminBlogPreferencesFormV2'    => BackendBehaviors::adminBlogPreferencesForm(...),
+                'adminBeforeBlogSettingsUpdate' => BackendBehaviors::adminBeforeBlogSettingsUpdate(...),
             ]);
         }
 
         // Store error and standard DC notices in the database
         dcCore::app()->addBehaviors([
-            'adminPageNotificationError' => [BackendBehaviors::class, 'adminPageNotificationError'],
-            'adminPageNotification'      => [BackendBehaviors::class, 'adminPageNotification'],
+            'adminPageNotificationError' => BackendBehaviors::adminPageNotificationError(...),
+            'adminPageNotification'      => BackendBehaviors::adminPageNotification(...),
         ]);
 
         return true;

@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\logNotices;
 
 use dcCore;
-use dcPage;
 use Dotclear\Core\Backend\Action\Actions;
+use Dotclear\Core\Backend\Page;
 use Dotclear\Helper\Html\Html;
 use Exception;
 
@@ -33,7 +33,7 @@ class BackendActions extends Actions
     {
         dcCore::app()->error->add($e->getMessage());
         $this->beginPage(
-            dcPage::breadcrumb(
+            Page::breadcrumb(
                 [
                     Html::escapeHTML(dcCore::app()->blog->name) => '',
                     __('Notices')                               => $this->getRedirection(true),
