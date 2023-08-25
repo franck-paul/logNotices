@@ -34,7 +34,7 @@ class Install extends Process
 
         try {
             // Init
-            $settings = dcCore::app()->blog->settings->get(My::id());
+            $settings = My::settings();
             $settings->put('active', false, dcNamespace::NS_BOOL, 'Active', false, true);
             $settings->put('error_only', false, dcNamespace::NS_BOOL, 'Only error notices?', false, true);
         } catch (Exception $e) {

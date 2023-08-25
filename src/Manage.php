@@ -88,7 +88,7 @@ class Manage extends Process
             'confirm_delete_notices' => __('Are you sure you want to delete selected notices?'),
         ]);
 
-        Page::openModule(__('Notices'), $head);
+        Page::openModule(My::name(), $head);
 
         echo Page::breadcrumb(
             [
@@ -140,9 +140,10 @@ class Manage extends Process
             '<p class="col right"><label for="action" class="classic">' . __('Selected notices action:') . '</label> ' .
             form::combo('action', $log_actions->getCombo()) .
             '<input id="do-action" type="submit" value="' . __('ok') . '" />' .
-            form::hidden(['p'], 'pages') .
-            form::hidden(['act'], 'list') .
-            dcCore::app()->formNonce() .
+            My::parsedHiddenFields([
+                'p'   => 'pages',
+                'act' => 'list',
+            ]) .
             '</p></div>' .
             '</form>'
         );

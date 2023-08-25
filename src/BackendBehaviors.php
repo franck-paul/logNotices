@@ -25,7 +25,7 @@ class BackendBehaviors
 {
     public static function adminBlogPreferencesForm()
     {
-        $settings = dcCore::app()->blog->settings->get(My::id());
+        $settings = My::settings();
         echo
         '<div class="fieldset" id="logNotices"><h4>' . __('Notices') . '</h4>' .
         '<p><label class="classic">' .
@@ -40,7 +40,7 @@ class BackendBehaviors
 
     public static function adminBeforeBlogSettingsUpdate()
     {
-        $settings = dcCore::app()->blog->settings->get(My::id());
+        $settings = My::settings();
         $settings->put('active', !empty($_POST['lognotices_active']), dcNamespace::NS_BOOL);
         $settings->put('error_only', !empty($_POST['lognotices_error_only']), dcNamespace::NS_BOOL);
     }
@@ -59,7 +59,7 @@ class BackendBehaviors
 
     public static function adminPageNotificationError($core, $err)
     {
-        $settings = dcCore::app()->blog->settings->get(My::id());
+        $settings = My::settings();
         if ($settings->active) {
             if ($err instanceof Exception) {
                 $msg = $err->getMessage();
@@ -74,7 +74,7 @@ class BackendBehaviors
 
     public static function adminPageNotification($core, $notice)
     {
-        $settings = dcCore::app()->blog->settings->get(My::id());
+        $settings = My::settings();
         if ($settings->active && !$settings->error_only) {
             $type = [
                 'success' => 'dc-success',

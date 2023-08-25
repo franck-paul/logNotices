@@ -37,13 +37,7 @@ class Backend extends Process
 
         if (My::checkContext(My::MANAGE)) {
             // Register menu
-            dcCore::app()->admin->menus[Menus::MENU_SYSTEM]->addItem(
-                __('Notices'),
-                My::manageUrl(),
-                My::icons(),
-                preg_match(My::urlScheme(), $_SERVER['REQUEST_URI']),
-                My::checkContext(My::MENU)
-            );
+            My::addBackendMenuItem(Menus::MENU_SYSTEM);
 
             /* Register favorite */
             dcCore::app()->addBehavior('adminDashboardFavoritesV2', function (Favorites $favs) {
