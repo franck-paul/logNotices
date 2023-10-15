@@ -24,7 +24,7 @@ use form;
 
 class BackendList extends Listing
 {
-    public function display($page, $nb_per_page, $enclose_block = '', $filter = false)
+    public function display(int $page, int $nb_per_page, string $enclose_block = '', bool $filter = false): void
     {
         if ($this->rs->isEmpty()) {
             if ($filter) {
@@ -74,7 +74,7 @@ class BackendList extends Listing
         }
     }
 
-    private function postLine($checked)
+    private function postLine(bool $checked): string
     {
         $res = '<tr class="line"' . ' id="p' . $this->rs->log_id . '">';
 

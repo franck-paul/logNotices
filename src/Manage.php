@@ -41,31 +41,8 @@ class Manage extends Process
             return false;
         }
 
-        // Get current list of stored notices
-        $params = [
-            'log_table' => ['dc-sys-error', 'dc-success', 'dc-warning', 'dc-error', 'dc-notice'],
-        ];
-
-        $page        = !empty($_GET['page']) ? max(1, (int) $_GET['page']) : 1;
-        $nb_per_page = 30;
-
-        if (!empty($_GET['nb']) && (int) $_GET['nb'] > 0) {
-            $nb_per_page = (int) $_GET['nb'];
-        }
-
-        $params['limit'] = [(($page - 1) * $nb_per_page), $nb_per_page];
-        $params['order'] = 'log_dt DESC';
-
-        try {
-            $lines    = dcCore::app()->log->getLogs($params);
-            $counter  = dcCore::app()->log->getLogs($params, true);
-            $log_list = new BackendList($lines, $counter->f(0));
-        } catch (Exception $e) {
-            dcCore::app()->error->add($e->getMessage());
-        }
-
         // Cope with actions
-        $log_actions = new BackendActions(dcCore::app()->admin->url->get('admin.plugin.' . My::id()));
+        $log_actions = new BackendActions(dcCore::app()->adminurl->get('admin.plugin.' . My::id()));
         if ($log_actions->process()) {
             return true;
         }
@@ -121,32 +98,32 @@ class Manage extends Process
             $lines    = dcCore::app()->log->getLogs($params);
             $counter  = dcCore::app()->log->getLogs($params, true);
             $log_list = new BackendList($lines, $counter->f(0));
+
+            $log_actions = new BackendActions(dcCore::app()->adminurl->get('admin.plugin.' . My::id()));
+
+            $log_list->display(
+                $page,
+                $nb_per_page,
+                '<form action="' . dcCore::app()->adminurl->get('admin.plugin') . '" method="post" id="form-notices">' .
+
+                '%s' .
+
+                '<div class="two-cols">' .
+                '<p class="col checkboxes-helpers"></p>' .
+
+                '<p class="col right"><label for="action" class="classic">' . __('Selected notices action:') . '</label> ' .
+                form::combo('action', $log_actions->getCombo()) .
+                '<input id="do-action" type="submit" value="' . __('ok') . '" />' .
+                My::parsedHiddenFields([
+                    'p'   => 'pages',
+                    'act' => 'list',
+                ]) .
+                '</p></div>' .
+                '</form>'
+            );
         } catch (Exception $e) {
             dcCore::app()->error->add($e->getMessage());
         }
-
-        $log_actions = new BackendActions(dcCore::app()->admin->url->get('admin.plugin.' . My::id()));
-
-        $log_list->display(     // @phpstan-ignore-line
-            $page,
-            $nb_per_page,
-            '<form action="' . dcCore::app()->admin->url->get('admin.plugin') . '" method="post" id="form-notices">' .
-
-            '%s' .
-
-            '<div class="two-cols">' .
-            '<p class="col checkboxes-helpers"></p>' .
-
-            '<p class="col right"><label for="action" class="classic">' . __('Selected notices action:') . '</label> ' .
-            form::combo('action', $log_actions->getCombo()) .
-            '<input id="do-action" type="submit" value="' . __('ok') . '" />' .
-            My::parsedHiddenFields([
-                'p'   => 'pages',
-                'act' => 'list',
-            ]) .
-            '</p></div>' .
-            '</form>'
-        );
 
         Page::closeModule();
     }

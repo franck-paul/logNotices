@@ -15,15 +15,14 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\logNotices;
 
 use dcCore;
-use dcError;
 use dcLog;
 use dcNamespace;
-use Exception;
+use Dotclear\Interface\Core\ErrorInterface;
 use form;
 
 class BackendBehaviors
 {
-    public static function adminBlogPreferencesForm()
+    public static function adminBlogPreferencesForm(): string
     {
         $settings = My::settings();
         echo
@@ -35,17 +34,21 @@ class BackendBehaviors
         '<p><label for="lognotices_error_only" class="classic">' .
         form::checkbox('lognotices_error_only', '1', $settings->error_only) .
         __('Only error notices') . '</label>' . '</p>' .
-            '</div>';
+        '</div>';
+
+        return '';
     }
 
-    public static function adminBeforeBlogSettingsUpdate()
+    public static function adminBeforeBlogSettingsUpdate(): string
     {
         $settings = My::settings();
         $settings->put('active', !empty($_POST['lognotices_active']), dcNamespace::NS_BOOL);
         $settings->put('error_only', !empty($_POST['lognotices_error_only']), dcNamespace::NS_BOOL);
+
+        return '';
     }
 
-    private static function addLogNotice($core, $table, $message)
+    private static function addLogNotice(string $table, string $message): void
     {
         // Add new log
         $cur = dcCore::app()->con->openCursor(dcCore::app()->prefix . dcLog::LOG_TABLE_NAME);
@@ -57,22 +60,36 @@ class BackendBehaviors
         dcCore::app()->log->addLog($cur);
     }
 
-    public static function adminPageNotificationError($core, $err)
+    /**
+     * @param      mixed            $unused  The unused
+     * @param      ErrorInterface   $err     The error
+     *
+     * @return     string
+     */
+    public static function adminPageNotificationError($unused, ErrorInterface $err): string
     {
         $settings = My::settings();
         if ($settings->active) {
-            if ($err instanceof Exception) {
-                $msg = $err->getMessage();
-            } elseif ($err instanceof dcError) {
-                $msg = $err->toHTML(false);
-            } else {
-                $msg = (string) $err;
+            if ($err->flag()) {
+                $message = '';
+                foreach ($err->dump() as $msg) {
+                    $message .= ($message === '' ? '' : ' – ') . $msg;
+                }
+
+                self::addLogNotice('dc-sys-error', $message);
             }
-            self::addLogNotice(dcCore::app(), 'dc-sys-error', $msg);
         }
+
+        return '';
     }
 
-    public static function adminPageNotification($core, $notice)
+    /**
+     * @param      mixed                    $unused  The unused
+     * @param      array<string, string>    $notice  The notice
+     *
+     * @return     string
+     */
+    public static function adminPageNotification($unused, array $notice): string
     {
         $settings = My::settings();
         if ($settings->active && !$settings->error_only) {
@@ -86,7 +103,9 @@ class BackendBehaviors
             if (!isset($notice['with_ts']) || $notice['with_ts']) {
                 $msg = $notice['ts'] . ' ' . $msg;
             }
-            self::addLogNotice(dcCore::app(), $table, $msg);
+            self::addLogNotice($table, $msg);
         }
+
+        return '';
     }
 }

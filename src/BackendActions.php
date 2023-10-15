@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\logNotices;
 
+use ArrayObject;
 use dcCore;
 use Dotclear\Core\Backend\Action\Actions;
 use Dotclear\Core\Backend\Page;
@@ -22,14 +23,20 @@ use Exception;
 
 class BackendActions extends Actions
 {
-    public function __construct($uri, $redirect_args = [])
+    /**
+     * Constructs a new instance.
+     *
+     * @param      null|string              $uri            The uri
+     * @param      array<string, string>    $redirect_args  The redirect arguments
+     */
+    public function __construct(?string $uri, array $redirect_args = [])
     {
         parent::__construct($uri, $redirect_args);
         $this->redirect_fields = [];
         $this->caller_title    = __('Notices');
     }
 
-    public function error(Exception $e)
+    public function error(Exception $e): void
     {
         dcCore::app()->error->add($e->getMessage());
         $this->beginPage(
@@ -44,7 +51,7 @@ class BackendActions extends Actions
         $this->endPage();
     }
 
-    public function beginPage($breadcrumb = '', $head = '')
+    public function beginPage(string $breadcrumb = '', string $head = ''): void
     {
         echo '<html><head><title>' . __('Notices') . '</title>' .
             $head .
@@ -53,12 +60,17 @@ class BackendActions extends Actions
         echo '<p><a class="back" href="' . $this->getRedirection(true) . '">' . __('Back to notices list') . '</a></p>';
     }
 
-    public function endPage()
+    public function endPage(): void
     {
         echo '</body></html>';
     }
 
-    protected function fetchEntries($from)
+    /**
+     * Fetches entries.
+     *
+     * @param      ArrayObject<string, mixed>  $from   The from
+     */
+    protected function fetchEntries(ArrayObject $from): void
     {
         $params = [
             'log_table' => ['dc-sys-error', 'dc-success', 'dc-warning', 'dc-error', 'dc-notice'],
