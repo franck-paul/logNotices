@@ -33,7 +33,7 @@ class BackendList extends Listing
                 echo '<p><strong>' . __('No notice') . '</strong></p>';
             }
         } else {
-            $pager   = new Pager($page, $this->rs_count, $nb_per_page, 10);
+            $pager   = new Pager($page, (int) $this->rs_count, $nb_per_page, 10);
             $entries = [];
             if (isset($_REQUEST['entries'])) {
                 foreach ($_REQUEST['entries'] as $v) {

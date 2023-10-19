@@ -16,6 +16,7 @@ namespace Dotclear\Plugin\logNotices;
 
 use ArrayObject;
 use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Backend\Action\Actions;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Helper\Html\Html;
@@ -42,9 +43,9 @@ class BackendActions extends Actions
         $this->beginPage(
             Page::breadcrumb(
                 [
-                    Html::escapeHTML(dcCore::app()->blog->name) => '',
-                    __('Notices')                               => $this->getRedirection(true),
-                    __('Notices actions')                       => '',
+                    Html::escapeHTML(App::blog()->name()) => '',
+                    __('Notices')                         => $this->getRedirection(true),
+                    __('Notices actions')                 => '',
                 ]
             )
         );

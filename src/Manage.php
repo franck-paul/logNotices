@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\logNotices;
 
 use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Core\Process;
@@ -69,8 +70,8 @@ class Manage extends Process
 
         echo Page::breadcrumb(
             [
-                Html::escapeHTML(dcCore::app()->blog->name) => '',
-                __('Notifications in database')             => '',
+                Html::escapeHTML(App::blog()->name()) => '',
+                __('Notifications in database')       => '',
             ]
         );
         echo Notices::getNotices();
