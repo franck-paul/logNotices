@@ -14,10 +14,9 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\logNotices;
 
-use dcCore;
-use dcLog;
-use dcNamespace;
+use Dotclear\App;
 use Dotclear\Interface\Core\ErrorInterface;
+use Dotclear\Interface\Core\LogInterface;
 use form;
 
 class BackendBehaviors
@@ -42,8 +41,8 @@ class BackendBehaviors
     public static function adminBeforeBlogSettingsUpdate(): string
     {
         $settings = My::settings();
-        $settings->put('active', !empty($_POST['lognotices_active']), dcNamespace::NS_BOOL);
-        $settings->put('error_only', !empty($_POST['lognotices_error_only']), dcNamespace::NS_BOOL);
+        $settings->put('active', !empty($_POST['lognotices_active']), App::blogWorkspace()::NS_BOOL);
+        $settings->put('error_only', !empty($_POST['lognotices_error_only']), App::blogWorkspace()::NS_BOOL);
 
         return '';
     }
@@ -51,13 +50,13 @@ class BackendBehaviors
     private static function addLogNotice(string $table, string $message): void
     {
         // Add new log
-        $cur = dcCore::app()->con->openCursor(dcCore::app()->prefix . dcLog::LOG_TABLE_NAME);
+        $cur = App::con()->openCursor(App::con()->prefix() . LogInterface::LOG_TABLE_NAME);
 
-        $cur->user_id   = dcCore::app()->auth->userID();
+        $cur->user_id   = App::auth()->userID();
         $cur->log_msg   = $message;
         $cur->log_table = $table;
 
-        dcCore::app()->log->addLog($cur);
+        App::log()->addLog($cur);
     }
 
     /**

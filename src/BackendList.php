@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\logNotices;
 
 use ArrayObject;
-use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Backend\Listing\Listing;
 use Dotclear\Core\Backend\Listing\Pager;
 use Dotclear\Helper\Date;
@@ -89,7 +89,7 @@ class BackendList extends Listing
             Date::str(
                 __('%Y/%m/%d %H:%M:%S'),
                 strtotime($this->rs->log_dt),
-                dcCore::app()->auth->getInfo('user_tz')
+                App::auth()->getInfo('user_tz')
             ) .
             '</td>',
             'ip'      => '<td class="nowrap">' . $this->rs->log_ip . '</td>',

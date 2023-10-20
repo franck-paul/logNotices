@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\logNotices;
 
-use dcCore;
 use Dotclear\App;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
@@ -43,7 +42,7 @@ class Manage extends Process
         }
 
         // Cope with actions
-        $log_actions = new BackendActions(dcCore::app()->adminurl->get('admin.plugin.' . My::id()));
+        $log_actions = new BackendActions(App::backend()->url()->get('admin.plugin.' . My::id()));
         if ($log_actions->process()) {
             return true;
         }
@@ -96,16 +95,16 @@ class Manage extends Process
         $params['order'] = 'log_dt DESC';
 
         try {
-            $lines    = dcCore::app()->log->getLogs($params);
-            $counter  = dcCore::app()->log->getLogs($params, true);
+            $lines    = App::log()->getLogs($params);
+            $counter  = App::log()->getLogs($params, true);
             $log_list = new BackendList($lines, $counter->f(0));
 
-            $log_actions = new BackendActions(dcCore::app()->adminurl->get('admin.plugin.' . My::id()));
+            $log_actions = new BackendActions(App::backend()->url()->get('admin.plugin.' . My::id()));
 
             $log_list->display(
                 $page,
                 $nb_per_page,
-                '<form action="' . dcCore::app()->adminurl->get('admin.plugin') . '" method="post" id="form-notices">' .
+                '<form action="' . App::backend()->url()->get('admin.plugin') . '" method="post" id="form-notices">' .
 
                 '%s' .
 
@@ -123,7 +122,7 @@ class Manage extends Process
                 '</form>'
             );
         } catch (Exception $e) {
-            dcCore::app()->error->add($e->getMessage());
+            App::error()->add($e->getMessage());
         }
 
         Page::closeModule();

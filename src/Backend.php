@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\logNotices;
 
-use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Backend\Favorites;
 use Dotclear\Core\Backend\Menus;
 use Dotclear\Core\Process;
@@ -40,7 +40,7 @@ class Backend extends Process
             My::addBackendMenuItem(Menus::MENU_SYSTEM);
 
             /* Register favorite */
-            dcCore::app()->addBehavior('adminDashboardFavoritesV2', function (Favorites $favs) {
+            App::behavior()->addBehavior('adminDashboardFavoritesV2', function (Favorites $favs) {
                 $favs->register('logNotices', [
                     'title'      => __('Notices'),
                     'url'        => My::manageUrl(),
@@ -49,7 +49,7 @@ class Backend extends Process
                 ]);
             });
 
-            dcCore::app()->addBehaviors([
+            App::behavior()->addBehaviors([
                 // Settings behaviors
                 'adminBlogPreferencesFormV2'    => BackendBehaviors::adminBlogPreferencesForm(...),
                 'adminBeforeBlogSettingsUpdate' => BackendBehaviors::adminBeforeBlogSettingsUpdate(...),
@@ -57,7 +57,7 @@ class Backend extends Process
         }
 
         // Store error and standard DC notices in the database
-        dcCore::app()->addBehaviors([
+        App::behavior()->addBehaviors([
             'adminPageNotificationError' => BackendBehaviors::adminPageNotificationError(...),
             'adminPageNotification'      => BackendBehaviors::adminPageNotification(...),
         ]);

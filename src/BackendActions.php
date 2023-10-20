@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\logNotices;
 
 use ArrayObject;
-use dcCore;
 use Dotclear\App;
 use Dotclear\Core\Backend\Action\Actions;
 use Dotclear\Core\Backend\Page;
@@ -39,7 +38,7 @@ class BackendActions extends Actions
 
     public function error(Exception $e): void
     {
-        dcCore::app()->error->add($e->getMessage());
+        App::error()->add($e->getMessage());
         $this->beginPage(
             Page::breadcrumb(
                 [
@@ -87,7 +86,7 @@ class BackendActions extends Actions
             $params['sql'] = 'AND 1=0 ';
         }
 
-        $lines    = dcCore::app()->log->getLogs($params);
+        $lines    = App::log()->getLogs($params);
         $this->rs = $lines;
     }
 }

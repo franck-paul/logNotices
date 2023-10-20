@@ -14,8 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\logNotices;
 
-use dcCore;
-use dcNamespace;
+use Dotclear\App;
 use Dotclear\Core\Process;
 use Exception;
 
@@ -35,10 +34,10 @@ class Install extends Process
         try {
             // Init
             $settings = My::settings();
-            $settings->put('active', false, dcNamespace::NS_BOOL, 'Active', false, true);
-            $settings->put('error_only', false, dcNamespace::NS_BOOL, 'Only error notices?', false, true);
+            $settings->put('active', false, App::blogWorkspace()::NS_BOOL, 'Active', false, true);
+            $settings->put('error_only', false, App::blogWorkspace()::NS_BOOL, 'Only error notices?', false, true);
         } catch (Exception $e) {
-            dcCore::app()->error->add($e->getMessage());
+            App::error()->add($e->getMessage());
         }
 
         return true;
