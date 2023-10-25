@@ -14,7 +14,7 @@ $this->registerModule(
     'Store notices in log table',
     'Store all or error only notices in the database',
     'Franck Paul and contributors',
-    '3.0',
+    '4.0',
     [
         'requires'    => [['core', '2.28']],
         'permissions' => 'My',
