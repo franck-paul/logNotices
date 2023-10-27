@@ -36,8 +36,8 @@ class Install extends Process
             $settings = My::settings();
             $settings->put('active', false, App::blogWorkspace()::NS_BOOL, 'Active', false, true);
             $settings->put('error_only', false, App::blogWorkspace()::NS_BOOL, 'Only error notices?', false, true);
-        } catch (Exception $e) {
-            App::error()->add($e->getMessage());
+        } catch (Exception $exception) {
+            App::error()->add($exception->getMessage());
         }
 
         return true;

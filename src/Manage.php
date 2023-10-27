@@ -43,11 +43,7 @@ class Manage extends Process
 
         // Cope with actions
         $log_actions = new BackendActions(App::backend()->url()->get('admin.plugin.' . My::id()));
-        if ($log_actions->process()) {
-            return true;
-        }
-
-        return true;
+        return (bool) $log_actions->process();
     }
 
     /**
@@ -84,7 +80,7 @@ class Manage extends Process
             'log_table' => ['dc-sys-error', 'dc-success', 'dc-warning', 'dc-error', 'dc-notice'],
         ];
 
-        $page        = !empty($_GET['page']) ? max(1, (int) $_GET['page']) : 1;
+        $page        = empty($_GET['page']) ? 1 : max(1, (int) $_GET['page']);
         $nb_per_page = 30;
 
         if (!empty($_GET['nb']) && (int) $_GET['nb'] > 0) {
@@ -121,8 +117,8 @@ class Manage extends Process
                 '</p></div>' .
                 '</form>'
             );
-        } catch (Exception $e) {
-            App::error()->add($e->getMessage());
+        } catch (Exception $exception) {
+            App::error()->add($exception->getMessage());
         }
 
         Page::closeModule();

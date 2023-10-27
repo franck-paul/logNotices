@@ -67,15 +67,13 @@ class BackendBehaviors
     public static function adminPageNotificationError($unused, ErrorInterface $err): string
     {
         $settings = My::settings();
-        if ($settings->active) {
-            if ($err->flag()) {
-                $message = '';
-                foreach ($err->dump() as $msg) {
-                    $message .= ($message === '' ? '' : ' – ') . $msg;
-                }
-
-                self::addLogNotice('dc-sys-error', $message);
+        if ($settings->active && $err->flag()) {
+            $message = '';
+            foreach ($err->dump() as $msg) {
+                $message .= ($message === '' ? '' : ' – ') . $msg;
             }
+
+            self::addLogNotice('dc-sys-error', $message);
         }
 
         return '';
@@ -101,6 +99,7 @@ class BackendBehaviors
             if (!isset($notice['with_ts']) || $notice['with_ts']) {
                 $msg = $notice['ts'] . ' ' . $msg;
             }
+
             self::addLogNotice($table, $msg);
         }
 

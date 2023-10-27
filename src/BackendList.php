@@ -40,8 +40,8 @@ class BackendList extends Listing
                     $entries[(int) $v] = true;
                 }
             }
-            $html_block = '<div class="table-outer">' .
-                '<table>';
+
+            $html_block = '<div class="table-outer"><table>';
 
             if ($filter) {
                 $html_block .= '<caption>' . sprintf(__('List of %s notices matching the filter.'), $this->rs_count) . '</caption>';
@@ -58,10 +58,11 @@ class BackendList extends Listing
                 'message' => '<th scope="col">' . __('Message') . '</th>',
             ];
             $cols = new ArrayObject($cols);
-            $html_block .= '<tr>' . implode(iterator_to_array($cols)) . '</tr>%s</table></div>';
-            if ($enclose_block) {
+            $html_block .= '<tr>' . implode('', iterator_to_array($cols)) . '</tr>%s</table></div>';
+            if ($enclose_block !== '' && $enclose_block !== '0') {
                 $html_block = sprintf($enclose_block, $html_block);
             }
+
             $blocks = explode('%s', $html_block);
 
             echo $pager->getLinks();
@@ -69,6 +70,7 @@ class BackendList extends Listing
             while ($this->rs->fetch()) {
                 echo $this->postLine(isset($entries[$this->rs->log_id]));
             }
+
             echo $blocks[1];
             echo $pager->getLinks();
         }
@@ -76,7 +78,7 @@ class BackendList extends Listing
 
     private function postLine(bool $checked): string
     {
-        $res = '<tr class="line"' . ' id="p' . $this->rs->log_id . '">';
+        $res = '<tr class="line" id="p' . $this->rs->log_id . '">';
 
         $cols = [
             'check' => '<td class="nowrap">' .
@@ -97,9 +99,8 @@ class BackendList extends Listing
         ];
         $cols = new ArrayObject($cols);
 
-        $res .= implode(iterator_to_array($cols));
-        $res .= '</tr>';
+        $res .= implode('', iterator_to_array($cols));
 
-        return $res;
+        return $res . '</tr>';
     }
 }
