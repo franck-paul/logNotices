@@ -68,7 +68,7 @@ class BackendActions extends Actions
     /**
      * Fetches entries.
      *
-     * @param      ArrayObject<string, mixed>  $from   The from
+     * @param      ArrayObject<int|string, mixed>  $from   The from
      */
     protected function fetchEntries(ArrayObject $from): void
     {
