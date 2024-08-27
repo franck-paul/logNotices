@@ -23,6 +23,6 @@ $this->registerModule(
 
         'details'    => 'https://open-time.net/?q=logNotices',
         'support'    => 'https://github.com/franck-paul/logNotices',
-        'repository' => 'https://raw.githubusercontent.com/franck-paul/logNotices/master/dcstore.xml',
+        'repository' => 'https://raw.githubusercontent.com/franck-paul/logNotices/main/dcstore.xml',
     ]
 );

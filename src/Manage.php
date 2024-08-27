@@ -43,6 +43,7 @@ class Manage extends Process
 
         // Cope with actions
         $log_actions = new BackendActions(App::backend()->url()->get('admin.plugin.' . My::id()));
+
         return (bool) $log_actions->process();
     }
 
@@ -109,7 +110,7 @@ class Manage extends Process
 
                 '<p class="col right"><label for="action" class="classic">' . __('Selected notices action:') . '</label> ' .
                 form::combo('action', $log_actions->getCombo()) .
-                '<input id="do-action" type="submit" value="' . __('ok') . '" />' .
+                '<input id="do-action" type="submit" value="' . __('ok') . '">' .
                 My::parsedHiddenFields([
                     'p'   => 'pages',
                     'act' => 'list',
