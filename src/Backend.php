@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief logNotices, a plugin for Dotclear 2
  *
@@ -23,7 +24,8 @@ class Backend extends Process
     public static function init(): bool
     {
         // dead but useful code, in order to have translations
-        __('Store notices in database') . __('Store all or error only notices in the database');
+        __('Store notices in database');
+        __('Store all or error only notices in the database');
 
         return self::status(My::checkContext(My::BACKEND));
     }
@@ -39,13 +41,15 @@ class Backend extends Process
             My::addBackendMenuItem(App::backend()->menus()::MENU_SYSTEM);
 
             /* Register favorite */
-            App::behavior()->addBehavior('adminDashboardFavoritesV2', static function (Favorites $favs) {
+            App::behavior()->addBehavior('adminDashboardFavoritesV2', static function (Favorites $favs): string {
                 $favs->register('logNotices', [
                     'title'      => __('Notices'),
                     'url'        => My::manageUrl(),
                     'small-icon' => My::icons(),
                     'large-icon' => My::icons(),
                 ]);
+
+                return '';
             });
 
             App::behavior()->addBehaviors([

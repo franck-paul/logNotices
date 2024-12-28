@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief logNotices, a plugin for Dotclear 2
  *
@@ -61,8 +62,6 @@ class BackendBehaviors
     /**
      * @param      mixed            $unused  The unused
      * @param      ErrorInterface   $err     The error
-     *
-     * @return     string
      */
     public static function adminPageNotificationError($unused, ErrorInterface $err): string
     {
@@ -82,8 +81,6 @@ class BackendBehaviors
     /**
      * @param      mixed                    $unused  The unused
      * @param      array<string, string>    $notice  The notice
-     *
-     * @return     string
      */
     public static function adminPageNotification($unused, array $notice): string
     {
