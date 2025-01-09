@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief logNotices, a plugin for Dotclear 2
  *
@@ -22,6 +23,9 @@ use Dotclear\Helper\Date;
 use Dotclear\Helper\Html\Html;
 use form;
 
+/**
+ * @todo switch Helper/Html/Form/...
+ */
 class BackendList extends Listing
 {
     public function display(int $page, int $nb_per_page, string $enclose_block = '', bool $filter = false): void

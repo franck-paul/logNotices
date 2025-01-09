@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief logNotices, a plugin for Dotclear 2
  *
@@ -21,6 +22,9 @@ use Dotclear\Core\Backend\Page;
 use Dotclear\Helper\Html\Html;
 use Exception;
 
+/**
+ * @todo switch Helper/Html/Form/...
+ */
 class BackendActions extends Actions
 {
     /**

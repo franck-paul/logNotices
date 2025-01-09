@@ -19,6 +19,9 @@ use Dotclear\App;
 use Dotclear\Interface\Core\ErrorInterface;
 use form;
 
+/**
+ * @todo switch Helper/Html/Form/...
+ */
 class BackendBehaviors
 {
     public static function adminBlogPreferencesForm(): string
