@@ -133,7 +133,7 @@ class Manage extends Process
                                     ->class(['col', 'right', 'form-buttons'])
                                     ->items([
                                         (new Select('action'))
-                                            ->items($log_actions->getCombo())
+                                            ->items($log_actions->getCombo())   // @phpstan-ignore-line
                                             ->label((new Label(__('Selected notices action:'), Label::IL_TF))),
                                         (new Submit('do-action', __('ok'))),
                                         ... My::hiddenFields(),
