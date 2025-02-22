@@ -24,9 +24,6 @@ use Dotclear\Helper\Html\Form\Para;
 use Dotclear\Helper\Html\Form\Text;
 use Dotclear\Interface\Core\ErrorInterface;
 
-/**
- * @todo switch Helper/Html/Form/...
- */
 class BackendBehaviors
 {
     public static function adminBlogPreferencesForm(): string
