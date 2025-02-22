@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief logNotices, a plugin for Dotclear 2
  *

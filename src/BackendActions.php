@@ -19,12 +19,11 @@ use ArrayObject;
 use Dotclear\App;
 use Dotclear\Core\Backend\Action\Actions;
 use Dotclear\Core\Backend\Page;
+use Dotclear\Helper\Html\Form\Link;
+use Dotclear\Helper\Html\Form\Para;
 use Dotclear\Helper\Html\Html;
 use Exception;
 
-/**
- * @todo switch Helper/Html/Form/...
- */
 class BackendActions extends Actions
 {
     /**
@@ -57,16 +56,26 @@ class BackendActions extends Actions
 
     public function beginPage(string $breadcrumb = '', string $head = ''): void
     {
-        echo '<html><head><title>' . __('Notices') . '</title>' .
-            $head .
-            '</script></head><body>' .
-            $breadcrumb;
-        echo '<p><a class="back" href="' . $this->getRedirection(true) . '">' . __('Back to notices list') . '</a></p>';
+        Page::openModule(
+            __('Notices'),
+            $head
+        );
+        echo
+        $breadcrumb;
+
+        echo (new Para())
+            ->items([
+                (new Link())
+                    ->class('back')
+                    ->href($this->getRedirection(true))
+                    ->text(__('Back to notices list')),
+            ])
+        ->render();
     }
 
     public function endPage(): void
     {
-        echo '</body></html>';
+        Page::closeModule();
     }
 
     /**
@@ -76,9 +85,7 @@ class BackendActions extends Actions
      */
     protected function fetchEntries(ArrayObject $from): void
     {
-        $params = [
-            'log_table' => ['dc-sys-error', 'dc-success', 'dc-warning', 'dc-error', 'dc-notice'],
-        ];
+        $params = [];
         if (!empty($from['entries'])) {
             $entries = $from['entries'];
             foreach ($entries as $k => $v) {
@@ -86,11 +93,8 @@ class BackendActions extends Actions
             }
 
             $params['sql'] = 'AND L.log_id IN(' . implode(',', $entries) . ') ';
-        } else {
-            $params['sql'] = 'AND 1=0 ';
         }
 
-        $lines    = App::log()->getLogs($params);
-        $this->rs = $lines;
+        $this->rs = App::log()->getLogs($params);
     }
 }

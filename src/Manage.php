@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief logNotices, a plugin for Dotclear 2
  *
@@ -18,9 +19,15 @@ use Dotclear\App;
 use Dotclear\Core\Backend\Notices;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Core\Process;
+use Dotclear\Helper\Html\Form\Div;
+use Dotclear\Helper\Html\Form\Form;
+use Dotclear\Helper\Html\Form\Label;
+use Dotclear\Helper\Html\Form\Para;
+use Dotclear\Helper\Html\Form\Select;
+use Dotclear\Helper\Html\Form\Submit;
+use Dotclear\Helper\Html\Form\Text;
 use Dotclear\Helper\Html\Html;
 use Exception;
-use form;
 
 class Manage extends Process
 {
@@ -42,9 +49,14 @@ class Manage extends Process
         }
 
         // Cope with actions
-        $log_actions = new BackendActions(App::backend()->url()->get('admin.plugin.' . My::id()));
+        App::backend()->logs_actions_page = new BackendActions(App::backend()->url()->get('admin.plugin.' . My::id()));
 
-        return (bool) $log_actions->process();
+        App::backend()->logs_actions_page_rendered = null;
+        if (App::backend()->logs_actions_page->process()) {
+            App::backend()->logs_actions_page_rendered = true;
+        }
+
+        return true;
     }
 
     /**
@@ -53,6 +65,12 @@ class Manage extends Process
     public static function render(): void
     {
         if (!self::status()) {
+            return;
+        }
+
+        if (App::backend()->logs_actions_page_rendered) {
+            App::backend()->logs_actions_page->render();
+
             return;
         }
 
@@ -101,22 +119,28 @@ class Manage extends Process
             $log_list->display(
                 $page,
                 $nb_per_page,
-                '<form action="' . App::backend()->url()->get('admin.plugin') . '" method="post" id="form-notices">' .
-
-                '%s' .
-
-                '<div class="two-cols">' .
-                '<p class="col checkboxes-helpers"></p>' .
-
-                '<p class="col right"><label for="action" class="classic">' . __('Selected notices action:') . '</label> ' .
-                form::combo('action', $log_actions->getCombo()) .
-                '<input id="do-action" type="submit" value="' . __('ok') . '">' .
-                My::parsedHiddenFields([
-                    'p'   => 'pages',
-                    'act' => 'list',
-                ]) .
-                '</p></div>' .
-                '</form>'
+                (new Form('form-notices'))
+                    ->method('post')
+                    ->action(App::backend()->getPageURL())
+                    ->fields([
+                        (new Text(null, '%s')),     // Here will come the list
+                        (new Div())
+                            ->class('two-cols')
+                            ->items([
+                                (new Para())
+                                    ->class(['col', 'checkboxes-helpers']),
+                                (new Para())
+                                    ->class(['col', 'right', 'form-buttons'])
+                                    ->items([
+                                        (new Select('action'))
+                                            ->items($log_actions->getCombo())
+                                            ->label((new Label(__('Selected notices action:'), Label::IL_TF))),
+                                        (new Submit('do-action', __('ok'))),
+                                        ... My::hiddenFields(),
+                                    ]),
+                            ]),
+                    ])
+                ->render()
             );
         } catch (Exception $exception) {
             App::error()->add($exception->getMessage());

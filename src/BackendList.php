@@ -15,29 +15,36 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\logNotices;
 
-use ArrayObject;
 use Dotclear\App;
 use Dotclear\Core\Backend\Listing\Listing;
 use Dotclear\Core\Backend\Listing\Pager;
 use Dotclear\Helper\Date;
+use Dotclear\Helper\Html\Form\Caption;
+use Dotclear\Helper\Html\Form\Checkbox;
+use Dotclear\Helper\Html\Form\Div;
+use Dotclear\Helper\Html\Form\Para;
+use Dotclear\Helper\Html\Form\Table;
+use Dotclear\Helper\Html\Form\Tbody;
+use Dotclear\Helper\Html\Form\Td;
+use Dotclear\Helper\Html\Form\Text;
+use Dotclear\Helper\Html\Form\Th;
+use Dotclear\Helper\Html\Form\Thead;
+use Dotclear\Helper\Html\Form\Tr;
 use Dotclear\Helper\Html\Html;
-use form;
 
-/**
- * @todo switch Helper/Html/Form/...
- */
 class BackendList extends Listing
 {
     public function display(int $page, int $nb_per_page, string $enclose_block = '', bool $filter = false): void
     {
         if ($this->rs->isEmpty()) {
-            if ($filter) {
-                echo '<p><strong>' . __('No notice matches the filter') . '</strong></p>';
-            } else {
-                echo '<p><strong>' . __('No notice') . '</strong></p>';
-            }
+            echo (new Para())
+                ->items([
+                    (new Text('strong', $filter ? __('No notice matches the filter') : __('No notice'))),
+                ])
+            ->render();
         } else {
-            $pager   = new Pager($page, (int) $this->rs_count, $nb_per_page, 10);
+            $pager = (new Pager($page, (int) $this->rs_count, $nb_per_page, 10))->getLinks();
+
             $entries = [];
             if (isset($_REQUEST['entries'])) {
                 foreach ($_REQUEST['entries'] as $v) {
@@ -45,66 +52,88 @@ class BackendList extends Listing
                 }
             }
 
-            $html_block = '<div class="table-outer"><table>';
-
             if ($filter) {
-                $html_block .= '<caption>' . sprintf(__('List of %s notices matching the filter.'), $this->rs_count) . '</caption>';
+                $caption = sprintf(__('List of %s notices matching the filter.'), $this->rs_count);
             } else {
-                $html_block .= '<caption>' . sprintf(__('List of notices (%s)'), $this->rs_count) . '</caption>';
+                $caption = sprintf(__('List of notices (%s)'), $this->rs_count);
             }
 
-            $cols = [
-                'user'    => '<th colspan="2" class="first">' . __('User') . '</th>',
-                'blog'    => '<th scope="col">' . __('Blog') . '</th>',
-                'type'    => '<th scope="col">' . __('Log type') . '</th>',
-                'date'    => '<th scope="col">' . __('Date') . '</th>',
-                'ip'      => '<th scope="col">' . __('IP') . '</th>',
-                'message' => '<th scope="col">' . __('Message') . '</th>',
-            ];
-            $cols = new ArrayObject($cols);
-            $html_block .= '<tr>' . implode('', iterator_to_array($cols)) . '</tr>%s</table></div>';
-            if ($enclose_block !== '' && $enclose_block !== '0') {
-                $html_block = sprintf($enclose_block, $html_block);
+            $lines = function ($rs, $entries) {
+                while ($rs->fetch()) {
+                    $checked = isset($entries[$this->rs->log_id]);
+                    yield (new Tr('p' . $rs->log_id))
+                        ->class('line')
+                        ->cols([
+                            (new Td())
+                                ->class('nowrap')
+                                ->items([
+                                    (new Checkbox(['entries[]'], $checked))
+                                        ->value($this->rs->log_id),
+                                ]),
+                            (new Td())
+                                ->class('nowrap')
+                                ->text(Html::escapeHTML($this->rs->user_id)),
+                            (new Td())
+                                ->class('nowrap')
+                                ->text(Html::escapeHTML($this->rs->blog_id)),
+                            (new Td())
+                                ->class('nowrap')
+                                ->text(Html::escapeHTML($this->rs->log_table)),
+                            (new Td())
+                                ->class(['nowrap', 'count'])
+                                ->text(Date::str(__('%Y/%m/%d %H:%M:%S'), strtotime($rs->log_dt), App::auth()->getInfo('user_tz'))),
+                            (new Td())
+                                ->class('nowrap')
+                                ->text(Html::escapeHTML($this->rs->log_ip)),
+                            (new Td())
+                                ->class('maximal')
+                                ->text(Html::escapeHTML($this->rs->log_msg)),
+                        ]);
+                }
+            };
+
+            $buffer = (new Div())
+                ->class('table-outer')
+                ->items([
+                    (new Table())
+                        ->caption((new Caption($caption)))
+                        ->thead((new Thead())
+                            ->rows([
+                                (new Tr())
+                                    ->cols([
+                                        (new Th())
+                                            ->class('first')
+                                            ->colspan(2)
+                                            ->text(__('User')),
+                                        (new Th())
+                                            ->scope('col')
+                                            ->text(__('Blog')),
+                                        (new Th())
+                                            ->scope('col')
+                                            ->text(__('Log type')),
+                                        (new Th())
+                                            ->scope('col')
+                                            ->text(__('Date')),
+                                        (new Th())
+                                            ->scope('col')
+                                            ->text(__('IP')),
+                                        (new Th())
+                                            ->scope('col')
+                                            ->text(__('Message')),
+                                    ]),
+                            ]))
+                        ->tbody((new Tbody())
+                            ->rows([
+                                ... $lines($this->rs, $entries),
+                            ])),
+                ])
+            ->render();
+
+            if ($enclose_block !== '') {
+                $buffer = sprintf($enclose_block, $buffer);
             }
 
-            $blocks = explode('%s', $html_block);
-
-            echo $pager->getLinks();
-            echo $blocks[0];
-            while ($this->rs->fetch()) {
-                echo $this->postLine(isset($entries[$this->rs->log_id]));
-            }
-
-            echo $blocks[1];
-            echo $pager->getLinks();
+            echo $pager . $buffer . $pager;
         }
-    }
-
-    private function postLine(bool $checked): string
-    {
-        $res = '<tr class="line" id="p' . $this->rs->log_id . '">';
-
-        $cols = [
-            'check' => '<td class="nowrap">' .
-            form::checkbox(['entries[]'], $this->rs->log_id, $checked, '', '') .
-            '</td>',
-            'user' => '<td class="nowrap">' . Html::escapeHTML($this->rs->user_id) . '</td>',
-            'blog' => '<td class="nowrap">' . Html::escapeHTML($this->rs->blog_id) . '</td>',
-            'type' => '<td class="nowrap">' . Html::escapeHTML($this->rs->log_table) . '</td>',
-            'date' => '<td class="nowrap count">' .
-            Date::str(
-                __('%Y/%m/%d %H:%M:%S'),
-                strtotime($this->rs->log_dt),
-                App::auth()->getInfo('user_tz')
-            ) .
-            '</td>',
-            'ip'      => '<td class="nowrap">' . $this->rs->log_ip . '</td>',
-            'message' => '<td class="maximal">' . Html::escapeHTML($this->rs->log_msg) . '</td>',
-        ];
-        $cols = new ArrayObject($cols);
-
-        $res .= implode('', iterator_to_array($cols));
-
-        return $res . '</tr>';
     }
 }

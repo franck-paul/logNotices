@@ -16,8 +16,13 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\logNotices;
 
 use Dotclear\App;
+use Dotclear\Helper\Html\Form\Checkbox;
+use Dotclear\Helper\Html\Form\Fieldset;
+use Dotclear\Helper\Html\Form\Label;
+use Dotclear\Helper\Html\Form\Legend;
+use Dotclear\Helper\Html\Form\Para;
+use Dotclear\Helper\Html\Form\Text;
 use Dotclear\Interface\Core\ErrorInterface;
-use form;
 
 /**
  * @todo switch Helper/Html/Form/...
@@ -26,17 +31,24 @@ class BackendBehaviors
 {
     public static function adminBlogPreferencesForm(): string
     {
-        $settings = My::settings();
-        echo
-        '<div class="fieldset" id="logNotices"><h4>' . __('Notices') . '</h4>' .
-        '<p><label class="classic">' .
-        form::checkbox('lognotices_active', '1', $settings->active) .
-        __('Store notices in database') . '</label></p>' .
-        '<h5>' . __('Options') . '</h5>' .
-        '<p><label for="lognotices_error_only" class="classic">' .
-        form::checkbox('lognotices_error_only', '1', $settings->error_only) .
-        __('Only error notices') . '</label>' . '</p>' .
-        '</div>';
+        echo (new Fieldset('logNotices'))
+            ->legend(new Legend(__('Notices')))
+            ->fields([
+                (new Para())
+                    ->items([
+                        (new Checkbox('lognotices_active', My::settings()->active))
+                            ->value(1)
+                            ->label(new Label(__('Store notices in database'), Label::IL_FT)),
+                    ]),
+                (new Text('h5', __('Options'))),
+                (new Para())
+                    ->items([
+                        (new Checkbox('lognotices_error_only', My::settings()->error_only))
+                            ->value(1)
+                            ->label(new Label(__('Only error notices'), Label::IL_FT)),
+                    ]),
+            ])
+        ->render();
 
         return '';
     }
