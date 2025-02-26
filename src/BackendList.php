@@ -81,7 +81,7 @@ class BackendList extends Listing
                                 ->text(Html::escapeHTML($this->rs->log_table)),
                             (new Td())
                                 ->class(['nowrap', 'count'])
-                                ->text(Date::str(__('%Y/%m/%d %H:%M:%S'), strtotime($rs->log_dt), App::auth()->getInfo('user_tz'))),
+                                ->text(Date::str(__('%Y/%m/%d %H:%M:%S'), strtotime((string) $rs->log_dt), App::auth()->getInfo('user_tz'))),
                             (new Td())
                                 ->class('nowrap')
                                 ->text(Html::escapeHTML($this->rs->log_ip)),
