@@ -23,10 +23,10 @@ use Dotclear\Helper\Html\Form\Caption;
 use Dotclear\Helper\Html\Form\Checkbox;
 use Dotclear\Helper\Html\Form\Div;
 use Dotclear\Helper\Html\Form\Para;
+use Dotclear\Helper\Html\Form\Strong;
 use Dotclear\Helper\Html\Form\Table;
 use Dotclear\Helper\Html\Form\Tbody;
 use Dotclear\Helper\Html\Form\Td;
-use Dotclear\Helper\Html\Form\Text;
 use Dotclear\Helper\Html\Form\Th;
 use Dotclear\Helper\Html\Form\Thead;
 use Dotclear\Helper\Html\Form\Tr;
@@ -39,7 +39,7 @@ class BackendList extends Listing
         if ($this->rs->isEmpty()) {
             echo (new Para())
                 ->items([
-                    (new Text('strong', $filter ? __('No notice matches the filter') : __('No notice'))),
+                    (new Strong($filter ? __('No notice matches the filter') : __('No notice'))),
                 ])
             ->render();
         } else {
