@@ -62,7 +62,7 @@ class BackendBehaviors
     private static function addLogNotice(string $table, string $message): void
     {
         // Add new log
-        $cur = App::con()->openCursor(App::con()->prefix() . App::log()::LOG_TABLE_NAME);
+        $cur = App::db()->con()->openCursor(App::db()->con()->prefix() . App::log()::LOG_TABLE_NAME);
 
         $cur->user_id   = App::auth()->userID();
         $cur->log_msg   = $message;
