@@ -17,7 +17,6 @@ namespace Dotclear\Plugin\logNotices;
 
 use Dotclear\App;
 use Dotclear\Core\Backend\Notices;
-use Dotclear\Core\Backend\Page;
 use Dotclear\Helper\Html\Form\Div;
 use Dotclear\Helper\Html\Form\Form;
 use Dotclear\Helper\Html\Form\Label;
@@ -76,24 +75,24 @@ class Manage
             return;
         }
 
-        $head = Page::jsLoad('js/jquery/jquery-ui.custom.js') .
-        Page::jsLoad('js/jquery/jquery.ui.touch-punch.js') .
-        Page::jsJson('lognotices', [
+        $head = App::backend()->page()->jsLoad('js/jquery/jquery-ui.custom.js') .
+        App::backend()->page()->jsLoad('js/jquery/jquery.ui.touch-punch.js') .
+        App::backend()->page()->jsJson('lognotices', [
             'confirm_delete_notices' => __('Are you sure you want to delete selected notices?'),
         ]);
 
-        Page::openModule(My::name(), $head);
+        App::backend()->page()->openModule(My::name(), $head);
 
-        echo Page::breadcrumb(
+        echo App::backend()->page()->breadcrumb(
             [
                 Html::escapeHTML(App::blog()->name()) => '',
                 __('Notifications in database')       => '',
             ]
         );
-        echo Notices::getNotices();
+        echo App::backend()->notices()->getNotices();
 
         if (!empty($_GET['del'])) {
-            Notices::success(__('Selected notices have been successfully deleted.'));
+            App::backend()->notices()->success(__('Selected notices have been successfully deleted.'));
         }
 
         // Get current list of stored notices
@@ -148,6 +147,6 @@ class Manage
             App::error()->add($exception->getMessage());
         }
 
-        Page::closeModule();
+        App::backend()->page()->closeModule();
     }
 }
