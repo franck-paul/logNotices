@@ -57,7 +57,7 @@ class BackendList extends Listing
                 $caption = sprintf(__('List of notices (%s)'), $this->rs_count);
             }
 
-            $lines = function ($rs, $entries) {
+            $lines = function ($rs, array $entries) {
                 while ($rs->fetch()) {
                     $checked = isset($entries[$this->rs->log_id]);
                     yield (new Tr('p' . $rs->log_id))
