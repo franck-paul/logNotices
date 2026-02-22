@@ -16,7 +16,6 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\logNotices;
 
 use Dotclear\App;
-use Dotclear\Core\Backend\Notices;
 use Dotclear\Helper\Html\Form\Div;
 use Dotclear\Helper\Html\Form\Form;
 use Dotclear\Helper\Html\Form\Label;
@@ -134,7 +133,7 @@ class Manage
                                     ->class(['col', 'right', 'form-buttons'])
                                     ->items([
                                         (new Select('action'))
-                                            ->items($log_actions->getCombo())   // @phpstan-ignore-line
+                                            ->items($log_actions->getCombo())
                                             ->label((new Label(__('Selected notices action:'), Label::IL_TF))),
                                         (new Submit('do-action', __('ok'))),
                                         ... My::hiddenFields(),
