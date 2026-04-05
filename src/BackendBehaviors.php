@@ -33,14 +33,14 @@ class BackendBehaviors
             ->fields([
                 (new Para())
                     ->items([
-                        (new Checkbox('lognotices_active', My::settings()->active))
+                        (new Checkbox('lognotices_active', (bool) My::settings()->active))
                             ->value(1)
                             ->label(new Label(__('Store notices in database'), Label::IL_FT)),
                     ]),
                 (new Text('h5', __('Options'))),
                 (new Para())
                     ->items([
-                        (new Checkbox('lognotices_error_only', My::settings()->error_only))
+                        (new Checkbox('lognotices_error_only', (bool) My::settings()->error_only))
                             ->value(1)
                             ->label(new Label(__('Only error notices'), Label::IL_FT)),
                     ]),

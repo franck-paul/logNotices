@@ -17,6 +17,7 @@ namespace Dotclear\Plugin\logNotices;
 
 use Dotclear\App;
 use Dotclear\Core\Backend\Favorites;
+use Dotclear\Core\Backend\Menus;
 use Dotclear\Helper\Process\TraitProcess;
 
 class Backend
@@ -40,7 +41,7 @@ class Backend
 
         if (My::checkContext(My::MANAGE)) {
             // Register menu
-            My::addBackendMenuItem(App::backend()->menus()::MENU_SYSTEM);
+            My::addBackendMenuItem(Menus::MENU_SYSTEM);
 
             /* Register favorite */
             App::behavior()->addBehavior('adminDashboardFavoritesV2', static function (Favorites $favs): string {

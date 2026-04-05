@@ -68,7 +68,7 @@ class Manage
             return;
         }
 
-        if (App::backend()->logs_actions_page_rendered) {
+        if (App::backend()->logs_actions_page instanceof BackendActions && App::backend()->logs_actions_page_rendered) {
             App::backend()->logs_actions_page->render();
 
             return;
@@ -99,12 +99,8 @@ class Manage
             'log_table' => ['dc-sys-error', 'dc-success', 'dc-warning', 'dc-error', 'dc-notice'],
         ];
 
-        $page        = empty($_GET['page']) ? 1 : max(1, (int) $_GET['page']);
-        $nb_per_page = 30;
-
-        if (!empty($_GET['nb']) && (int) $_GET['nb'] > 0) {
-            $nb_per_page = (int) $_GET['nb'];
-        }
+        $page        = isset($_GET['page']) && is_numeric($page = $_GET['page']) ? max(1, (int) $page) : 1;
+        $nb_per_page = isset($_GET['nb'])   && is_numeric($nb_per_page = $_GET['nb']) ? max(1, (int) $nb_per_page) : 30;
 
         $params['limit'] = [(($page - 1) * $nb_per_page), $nb_per_page];
         $params['order'] = 'log_dt DESC';

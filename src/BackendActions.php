@@ -30,6 +30,8 @@ class BackendActions extends Actions
      *
      * @param      null|string              $uri            The uri
      * @param      array<string, string>    $redirect_args  The redirect arguments
+     *
+     * @todo        Add deletion action
      */
     public function __construct(?string $uri, array $redirect_args = [])
     {
@@ -86,12 +88,16 @@ class BackendActions extends Actions
     {
         $params = [];
         if (!empty($from['entries'])) {
-            $entries = $from['entries'];
+            $entries = isset($from['entries']) && is_array($entries = $from['entries']) ? $entries : [];
+            $list    = [];
             foreach ($entries as $k => $v) {
-                $entries[$k] = (int) $v;
+                $log_id = is_numeric($log_id = $v) ? (int) $log_id : 0;
+                if ($log_id !== 0) {
+                    $list[$k] = $log_id;
+                }
             }
 
-            $params['sql'] = 'AND L.log_id IN(' . implode(',', $entries) . ') ';
+            $params['sql'] = 'AND L.log_id IN(' . implode(',', $list) . ') ';
         }
 
         $this->rs = App::log()->getLogs($params);

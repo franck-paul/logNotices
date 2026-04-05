@@ -44,10 +44,18 @@ class BackendList extends Listing
         } else {
             $pager = App::backend()->listing()->pager($page, (int) $this->rs_count, $nb_per_page, 10)->getLinks();
 
-            $entries = [];
-            if (isset($_REQUEST['entries'])) {
-                foreach ($_REQUEST['entries'] as $v) {
-                    $entries[(int) $v] = true;
+            /**
+             * @var array<string>
+             */
+            $entries = isset($_REQUEST['entries']) && is_array($entries = $_REQUEST['entries']) ? $entries : [];
+
+            $selected = [];
+            if ($entries !== []) {
+                foreach ($entries as $value) {
+                    $index = is_numeric($index = $value) ? (int) $value : 0;
+                    if ($index !== 0) {
+                        $selected[$index] = true;
+                    }
                 }
             }
 
@@ -57,37 +65,47 @@ class BackendList extends Listing
                 $caption = sprintf(__('List of notices (%s)'), $this->rs_count);
             }
 
-            $lines = function ($rs, array $entries) {
-                while ($rs->fetch()) {
-                    $checked = isset($entries[$this->rs->log_id]);
-                    yield (new Tr('p' . $rs->log_id))
-                        ->class('line')
-                        ->cols([
-                            (new Td())
-                                ->class('nowrap')
-                                ->items([
-                                    (new Checkbox(['entries[]'], $checked))
-                                        ->value($this->rs->log_id),
-                                ]),
-                            (new Td())
-                                ->class('nowrap')
-                                ->text(Html::escapeHTML($this->rs->user_id)),
-                            (new Td())
-                                ->class('nowrap')
-                                ->text(Html::escapeHTML($this->rs->blog_id)),
-                            (new Td())
-                                ->class('nowrap')
-                                ->text(Html::escapeHTML($this->rs->log_table)),
-                            (new Td())
-                                ->class(['nowrap', 'count'])
-                                ->text(Date::str(__('%Y/%m/%d %H:%M:%S'), strtotime((string) $rs->log_dt), App::auth()->getInfo('user_tz'))),
-                            (new Td())
-                                ->class('nowrap')
-                                ->text(Html::escapeHTML($this->rs->log_ip)),
-                            (new Td())
-                                ->class('maximal')
-                                ->text(Html::escapeHTML($this->rs->log_msg)),
-                        ]);
+            $lines = function () use ($selected) {
+                while ($this->rs->fetch()) {
+                    $log_id = is_numeric($log_id = $this->rs->log_id) ? (int) $log_id : 0;
+                    if ($log_id !== 0) {
+                        $user_id   = is_string($user_id = $this->rs->user_id) ? $user_id : '';
+                        $blog_id   = is_string($blog_id = $this->rs->blog_id) ? $blog_id : '';
+                        $log_table = is_string($log_table = $this->rs->log_table) ? $log_table : '';
+                        $log_dt    = is_string($log_dt = $this->rs->log_dt) ? $log_dt : '';
+                        $log_ip    = is_string($log_ip = $this->rs->log_ip) ? $log_ip : '';
+                        $log_msg   = is_string($log_msg = $this->rs->log_msg) ? $log_msg : '';
+                        $user_tz   = is_string($user_tz = App::auth()->getInfo('user_tz')) ? $user_tz : null;
+
+                        yield (new Tr('p' . $log_id))
+                            ->class('line')
+                            ->cols([
+                                (new Td())
+                                    ->class('nowrap')
+                                    ->items([
+                                        (new Checkbox(['entries[]'], isset($selected[$log_id])))
+                                            ->value($log_id),
+                                    ]),
+                                (new Td())
+                                    ->class('nowrap')
+                                    ->text(Html::escapeHTML($user_id)),
+                                (new Td())
+                                    ->class('nowrap')
+                                    ->text(Html::escapeHTML($blog_id)),
+                                (new Td())
+                                    ->class('nowrap')
+                                    ->text(Html::escapeHTML($log_table)),
+                                (new Td())
+                                    ->class(['nowrap', 'count'])
+                                    ->text(Date::str(__('%Y/%m/%d %H:%M:%S'), strtotime($log_dt), $user_tz)),
+                                (new Td())
+                                    ->class('nowrap')
+                                    ->text(Html::escapeHTML($log_ip)),
+                                (new Td())
+                                    ->class('maximal')
+                                    ->text(Html::escapeHTML($log_msg)),
+                            ]);
+                    }
                 }
             };
 
@@ -123,7 +141,7 @@ class BackendList extends Listing
                             ]))
                         ->tbody((new Tbody())
                             ->rows([
-                                ... $lines($this->rs, $entries),
+                                ... $lines(),
                             ])),
                 ])
             ->render();

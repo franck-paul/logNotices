@@ -12,7 +12,7 @@
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
 $this->registerModule(
-    'logNotices',
+    'Notices',
     'Store all or error only notices in the database',
     'Franck Paul and contributors',
     '6.2',
