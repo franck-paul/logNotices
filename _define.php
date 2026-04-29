@@ -15,9 +15,9 @@ $this->registerModule(
     'Notices',
     'Store all or error only notices in the database',
     'Franck Paul and contributors',
-    '6.3',
+    '7.0',
     [
-        'date'        => '2026-04-05T16:56:47+0200',
+        'date'        => '2026-04-29T14:25:25+0200',
         'requires'    => [['core', '2.38']],
         'permissions' => 'My',
         'type'        => 'plugin',
