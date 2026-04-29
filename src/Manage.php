@@ -108,7 +108,7 @@ class Manage
         try {
             $lines    = App::log()->getLogs($params);
             $counter  = App::log()->getLogs($params, true);
-            $log_list = new BackendList($lines, $counter->f(0));
+            $log_list = new BackendList($lines, $counter->cardinal());
 
             $log_actions = new BackendActions(App::backend()->url()->get('admin.plugin.' . My::id()));
 
