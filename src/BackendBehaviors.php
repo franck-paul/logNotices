@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\logNotices;
 
 use Dotclear\App;
+use Dotclear\Core\Backend\Notice;
 use Dotclear\Helper\Html\Form\Checkbox;
 use Dotclear\Helper\Html\Form\Fieldset;
 use Dotclear\Helper\Html\Form\Label;
@@ -90,11 +91,7 @@ class BackendBehaviors
         return '';
     }
 
-    /**
-     * @param      mixed                    $unused  The unused
-     * @param      array<string, string>    $notice  The notice
-     */
-    public static function adminPageNotification($unused, array $notice): string
+    public static function adminPageNotification(Notice $notice): string
     {
         $settings = My::settings();
         if ($settings->active && !$settings->error_only) {
@@ -103,10 +100,12 @@ class BackendBehaviors
                 'warning' => 'dc-warning',
                 'error'   => 'dc-error', ];
 
-            $table = $type[$notice['class']] ?? 'dc-notice';
-            $msg   = $notice['text'];
-            if (!isset($notice['with_ts']) || $notice['with_ts']) {
-                $msg = $notice['ts'] . ' ' . $msg;
+            $class = $notice->getClass();
+            $table = $class !== '' && isset($type[$class]) ? $type[$class] : 'dc-notice';
+
+            $msg = $notice->getMsg();
+            if ($notice->useTs() && $notice->getTs() !== '') {
+                $msg = $notice->getTs() . ' ' . $msg;
             }
 
             self::addLogNotice($table, $msg);

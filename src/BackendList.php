@@ -42,7 +42,7 @@ class BackendList extends Listing
                 ])
             ->render();
         } else {
-            $pager = App::backend()->listing()->pager($page, (int) $this->rs_count, $nb_per_page, 10)->getLinks();
+            $pager = App::backend()->listing()->pager($page, $this->rs_count, $nb_per_page, 10)->getLinks();
 
             /**
              * @var array<string>
