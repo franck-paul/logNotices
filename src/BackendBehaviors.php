@@ -34,14 +34,14 @@ class BackendBehaviors
             ->fields([
                 (new Para())
                     ->items([
-                        (new Checkbox('lognotices_active', (bool) My::settings()->active))
+                        (new Checkbox('lognotices_active', My::settings()->getBool('active', false)))
                             ->value(1)
                             ->label(new Label(__('Store notices in database'), Label::IL_FT)),
                     ]),
                 (new Text('h5', __('Options'))),
                 (new Para())
                     ->items([
-                        (new Checkbox('lognotices_error_only', (bool) My::settings()->error_only))
+                        (new Checkbox('lognotices_error_only', My::settings()->getBool('error_only', false)))
                             ->value(1)
                             ->label(new Label(__('Only error notices'), Label::IL_FT)),
                     ]),
@@ -79,7 +79,7 @@ class BackendBehaviors
     public static function adminPageNotificationError($unused, ErrorInterface $err): string
     {
         $settings = My::settings();
-        if ($settings->active && $err->flag()) {
+        if ($settings->getBool('active') && $err->flag()) {
             $message = '';
             foreach ($err->dump() as $msg) {
                 $message .= ($message === '' ? '' : ' – ') . $msg;
@@ -94,7 +94,7 @@ class BackendBehaviors
     public static function adminPageNotification(Notice $notice): string
     {
         $settings = My::settings();
-        if ($settings->active && !$settings->error_only) {
+        if ($settings->getBool('active') && !$settings->getBool('error_only')) {
             $type = [
                 'success' => 'dc-success',
                 'warning' => 'dc-warning',
