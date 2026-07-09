@@ -67,14 +67,14 @@ class BackendList extends Listing
 
             $lines = function () use ($selected) {
                 while ($this->rs->fetch()) {
-                    $log_id = is_numeric($log_id = $this->rs->log_id) ? (int) $log_id : 0;
+                    $log_id = $this->rs->intField('log_id');
                     if ($log_id !== 0) {
-                        $user_id   = is_string($user_id = $this->rs->user_id) ? $user_id : '';
-                        $blog_id   = is_string($blog_id = $this->rs->blog_id) ? $blog_id : '';
-                        $log_table = is_string($log_table = $this->rs->log_table) ? $log_table : '';
-                        $log_dt    = is_string($log_dt = $this->rs->log_dt) ? $log_dt : '';
-                        $log_ip    = is_string($log_ip = $this->rs->log_ip) ? $log_ip : '';
-                        $log_msg   = is_string($log_msg = $this->rs->log_msg) ? $log_msg : '';
+                        $user_id   = $this->rs->strField('user_id');
+                        $blog_id   = $this->rs->strField('blog_id');
+                        $log_table = $this->rs->strField('log_table');
+                        $log_dt    = $this->rs->strField('log_dt');
+                        $log_ip    = $this->rs->strField('log_ip');
+                        $log_msg   = $this->rs->strField('log_msg');
                         $user_tz   = is_string($user_tz = App::auth()->getInfo('user_tz')) ? $user_tz : null;
 
                         yield (new Tr('p' . $log_id))
