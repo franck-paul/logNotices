@@ -65,9 +65,9 @@ class BackendBehaviors
         // Add new log
         $cur = App::db()->con()->openCursor(App::db()->con()->prefix() . App::log()::LOG_TABLE_NAME);
 
-        $cur->user_id   = App::auth()->userID();
-        $cur->log_msg   = $message;
-        $cur->log_table = $table;
+        $cur->setStrField('user_id', App::auth()->userID());
+        $cur->setStrField('log_msg', $message);
+        $cur->setStrField('log_table', $table);
 
         App::log()->addLog($cur);
     }
