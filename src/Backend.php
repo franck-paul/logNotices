@@ -44,8 +44,8 @@ class Backend
             My::addBackendMenuItem(Menus::MENU_SYSTEM);
 
             /* Register favorite */
-            App::behavior()->addBehavior('adminDashboardFavoritesV2', static function (Favorites $favs): string {
-                $favs->register('logNotices', [
+            App::behavior()->addBehavior('adminDashboardFavoritesV2', static function (Favorites $favorites): string {
+                $favorites->register('logNotices', [
                     'title'          => __('Notices'),
                     'url'            => My::manageUrl(),
                     'menu-icon'      => My::icon(),

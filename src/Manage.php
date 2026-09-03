@@ -106,13 +106,13 @@ class Manage
         $params['order'] = 'log_dt DESC';
 
         try {
-            $lines    = App::log()->getLogs($params);
-            $counter  = App::log()->getLogs($params, true);
-            $log_list = new BackendList($lines, $counter->cardinal());
+            $lines       = App::log()->getLogs($params);
+            $counter     = App::log()->getLogs($params, true);
+            $backendList = new BackendList($lines, $counter->cardinal());
 
-            $log_actions = new BackendActions(App::backend()->url()->get('admin.plugin.' . My::id()));
+            $backendActions = new BackendActions(App::backend()->url()->get('admin.plugin.' . My::id()));
 
-            $log_list->display(
+            $backendList->display(
                 $page,
                 $nb_per_page,
                 (new Form('form-notices'))
@@ -129,7 +129,7 @@ class Manage
                                     ->class(['col', 'right', 'form-buttons'])
                                     ->items([
                                         (new Select('action'))
-                                            ->items($log_actions->getCombo())
+                                            ->items($backendActions->getCombo())
                                             ->label((new Label(__('Selected notices action:'), Label::IL_TF))),
                                         (new Submit('do-action', __('ok'))),
                                         ... My::hiddenFields(),

@@ -40,9 +40,9 @@ class BackendActions extends Actions
         $this->caller_title    = __('Notices');
     }
 
-    public function error(Exception $e): void
+    public function error(Exception $exception): void
     {
-        App::error()->add($e->getMessage());
+        App::error()->add($exception->getMessage());
         $this->beginPage(
             App::backend()->page()->breadcrumb(
                 [
@@ -82,13 +82,13 @@ class BackendActions extends Actions
     /**
      * Fetches entries.
      *
-     * @param      ArrayObject<int|string, mixed>  $from   The from
+     * @param      ArrayObject<int|string, mixed>  $arrayObject   The from
      */
-    protected function fetchEntries(ArrayObject $from): void
+    protected function fetchEntries(ArrayObject $arrayObject): void
     {
         $params = [];
-        if (!empty($from['entries'])) {
-            $entries = isset($from['entries']) && is_array($entries = $from['entries']) ? $entries : [];
+        if (!empty($arrayObject['entries'])) {
+            $entries = isset($arrayObject['entries']) && is_array($entries = $arrayObject['entries']) ? $entries : [];
             $list    = [];
             foreach ($entries as $k => $v) {
                 $log_id = is_numeric($log_id = $v) ? (int) $log_id : 0;

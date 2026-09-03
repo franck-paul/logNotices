@@ -74,14 +74,14 @@ class BackendBehaviors
 
     /**
      * @param      mixed            $unused  The unused
-     * @param      ErrorInterface   $err     The error
+     * @param      ErrorInterface   $error     The error
      */
-    public static function adminPageNotificationError($unused, ErrorInterface $err): string
+    public static function adminPageNotificationError($unused, ErrorInterface $error): string
     {
         $settings = My::settings();
-        if ($settings->getBool('active') && $err->flag()) {
+        if ($settings->getBool('active') && $error->flag()) {
             $message = '';
-            foreach ($err->dump() as $msg) {
+            foreach ($error->dump() as $msg) {
                 $message .= ($message === '' ? '' : ' – ') . $msg;
             }
 
