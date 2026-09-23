@@ -52,7 +52,7 @@ class BackendList extends Listing
             $selected = [];
             if ($entries !== []) {
                 foreach ($entries as $entry) {
-                    $index = is_numeric($index = $entry) ? (int) $entry : 0;
+                    $index = is_numeric($index = $entry) ? (int) $index : 0;
                     if ($index !== 0) {
                         $selected[$index] = true;
                     }
