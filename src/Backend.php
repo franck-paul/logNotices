@@ -64,8 +64,8 @@ class Backend
 
         // Store error and standard DC notices in the database
         App::behavior()->addBehaviors([
-            'adminPageNotificationError' => BackendBehaviors::adminPageNotificationError(...),
-            'adminPageNotificationV2'    => BackendBehaviors::adminPageNotification(...),
+            'adminPageNotificationErrorV2' => BackendBehaviors::adminPageNotificationError(...),
+            'adminPageNotificationV2'      => BackendBehaviors::adminPageNotification(...),
         ]);
 
         return true;

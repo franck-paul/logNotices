@@ -73,10 +73,9 @@ class BackendBehaviors
     }
 
     /**
-     * @param      mixed            $unused  The unused
      * @param      ErrorInterface   $error     The error
      */
-    public static function adminPageNotificationError($unused, ErrorInterface $error): string
+    public static function adminPageNotificationError(ErrorInterface $error): string
     {
         $settings = My::settings();
         if ($settings->getBool('active') && $error->flag()) {
