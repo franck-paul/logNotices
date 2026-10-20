@@ -3,7 +3,7 @@
 [![Release](https://img.shields.io/github/v/release/franck-paul/logNotices)](https://github.com/franck-paul/logNotices/releases)
 [![Date](https://img.shields.io/github/release-date/franck-paul/logNotices)](https://github.com/franck-paul/logNotices/releases)
 [![Issues](https://img.shields.io/github/issues/franck-paul/logNotices)](https://github.com/franck-paul/logNotices/issues)
-[![License](https://img.shields.io/github/license/franck-paul/logNotices)](https://github.com/franck-paul/logNotices/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/franck-paul/logNotices)](https://github.com/franck-paul/logNotices/blob/main/LICENSE)
 
 This plugin stores all (or only error) notices in dc_log table. It may also be used to list the content of this tables and selectively delete some or all of its content.
 
