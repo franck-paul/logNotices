@@ -52,7 +52,7 @@ class Manage
         App::backend()->logs_actions_page = new BackendActions(App::backend()->url()->get('admin.plugin.' . My::id()));
 
         App::backend()->logs_actions_page_rendered = null;
-        if (App::backend()->logs_actions_page->process()) {
+        if ((bool) App::backend()->logs_actions_page->process()) {
             App::backend()->logs_actions_page_rendered = true;
         }
 
@@ -68,7 +68,7 @@ class Manage
             return;
         }
 
-        if (App::backend()->logs_actions_page instanceof BackendActions && App::backend()->logs_actions_page_rendered) {
+        if (App::backend()->logs_actions_page instanceof BackendActions && (bool) App::backend()->logs_actions_page_rendered) {
             App::backend()->logs_actions_page->render();
 
             return;

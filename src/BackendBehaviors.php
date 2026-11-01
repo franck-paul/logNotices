@@ -78,7 +78,7 @@ class BackendBehaviors
     public static function adminPageNotificationError(ErrorInterface $error): string
     {
         $settings = My::settings();
-        if ($settings->getBool('active') && $error->flag()) {
+        if ($settings->getBool('active', false) && $error->flag()) {
             $message = '';
             foreach ($error->dump() as $msg) {
                 $message .= ($message === '' ? '' : ' – ') . $msg;
@@ -93,7 +93,7 @@ class BackendBehaviors
     public static function adminPageNotification(Notice $notice): string
     {
         $settings = My::settings();
-        if ($settings->getBool('active') && !$settings->getBool('error_only')) {
+        if ($settings->getBool('active', false) && !$settings->getBool('error_only', false)) {
             $type = [
                 'success' => 'dc-success',
                 'warning' => 'dc-warning',
