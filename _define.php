@@ -18,9 +18,9 @@ if (isset($this) && is_object($this) && method_exists($this, 'registerModule') &
         'Notices',
         'Store all or error only notices in the database',
         'Franck Paul and contributors',
-        '8.0',
+        '9.0',
         [
-            'date'        => '2026-08-03T10:03:27+0200',
+            'date'        => '2026-11-08T10:16:58+0100',
             'requires'    => [['core', '2.40']],
             'permissions' => 'My',
             'type'        => 'plugin',
